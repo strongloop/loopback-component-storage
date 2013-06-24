@@ -118,6 +118,21 @@ describe('FileSystem based storage provider', function () {
             });
         });
 
+        it('should remove a file', function (done) {
+            client.removeFile('c1', 'f1.txt', function (err) {
+                assert(!err);
+                done(err);
+            });
+        });
+
+        it('should get no files from a container', function (done) {
+            client.getFiles('c1', function (err, files) {
+                assert(!err);
+                assert.equal(0, files.length);
+                done(err, files);
+            });
+        });
+
         it('should destroy a container c1', function (done) {
             client.destroyContainer('c1', function (err, container) {
                 // console.error(err);
