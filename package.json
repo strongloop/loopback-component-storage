@@ -1,0 +1,22 @@
+{
+    "name": "asteroid-storage-service",
+    "description": "Asteroid Storage Service",
+    "version": "0.0.1",
+    "main": "index.js",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
+    },
+    "dependencies": {
+        "pkgcloud": "latest",
+        "async": "latest"
+    },
+    "devDependencies": {
+        "mocha": "latest",
+        "supertest": "latest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/strongloop/asteroid-storage-service.git"
+    }
+
+}
