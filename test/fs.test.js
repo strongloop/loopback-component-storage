@@ -86,17 +86,20 @@ describe('FileSystem based storage provider', function () {
         });
 
         it('should upload a file', function (done) {
-            fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(
-                client.upload({container: 'c1', remote: 'f1.txt'}));
-            done();
+            var writer = client.upload({container: 'c1', remote: 'f1.txt'});
+            fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(writer);
+            writer.on('finish', done);
+            writer.on('error', done);
         });
 
         it('should download a file', function (done) {
-            client.download({
+            var reader = client.download({
                 container: 'c1',
                 remote: 'f1.txt'
-            }).pipe(fs.createWriteStream(path.join(__dirname, 'files/f1_downloaded.txt')));
-            done();
+            });
+            reader.pipe(fs.createWriteStream(path.join(__dirname, 'files/f1_downloaded.txt')));
+            reader.on('end', done);
+            reader.on('error', done);
         });
 
         it('should get files for a container', function (done) {
@@ -117,7 +120,7 @@ describe('FileSystem based storage provider', function () {
 
         it('should destroy a container c1', function (done) {
             client.destroyContainer('c1', function (err, container) {
-                console.error(err);
+                // console.error(err);
                 assert(!err);
                 done(err, container);
             });
