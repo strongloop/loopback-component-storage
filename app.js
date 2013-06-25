@@ -1,4 +1,4 @@
-var storage = require('pkgcloud').storage;
+var storage = require('./lib/index');
 
 var client = storage.createClient({
     provider: 'rackspace',
@@ -9,8 +9,17 @@ var client = storage.createClient({
 // Container
 
 client.getContainers(function (err, containers) {
-    containers.forEach(function(c) {
-       console.log(c.name);
+    if (err) {
+        console.error(err);
+        return;
+    }
+    containers.forEach(function (c) {
+        console.log('rackspace: ', c.name);
+        c.getFiles(function (err, files) {
+            files.forEach(function (f) {
+                console.log('....', f.name);
+            });
+        });
     });
 });
 
@@ -36,11 +45,16 @@ var s3 = storage.createClient({
 });
 
 s3.getContainers(function (err, containers) {
-    if(err) {
+    if (err) {
         console.error(err);
         return;
     }
-    containers.forEach(function(c) {
-        console.log(c.name);
+    containers.forEach(function (c) {
+        console.log('amazon: ', c.name);
+        c.getFiles(function (err, files) {
+            files.forEach(function (f) {
+                console.log('....', f.name);
+            });
+        });
     });
 });
