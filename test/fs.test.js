@@ -1,4 +1,4 @@
-var FileSystemProvider = require('../lib/providers/file.js');
+var FileSystemProvider = require('../lib/providers/filesystem/index.js');
 
 var assert = require('assert');
 var path = require('path');
