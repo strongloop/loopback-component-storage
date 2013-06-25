@@ -1,6 +1,7 @@
-var storage = require('./lib/index');
+var storage = require('../lib/index');
+var path = require('path');
 
-var client = storage.createClient({
+var rs = storage.createClient({
     provider: 'rackspace',
     username: 'strongloop',
     apiKey: 'your-rackspace-api-key'
@@ -8,7 +9,7 @@ var client = storage.createClient({
 
 // Container
 
-client.getContainers(function (err, containers) {
+rs.getContainers(function (err, containers) {
     if (err) {
         console.error(err);
         return;
@@ -51,6 +52,28 @@ s3.getContainers(function (err, containers) {
     }
     containers.forEach(function (c) {
         console.log('amazon: ', c.name);
+        c.getFiles(function (err, files) {
+            files.forEach(function (f) {
+                console.log('....', f.name);
+            });
+        });
+    });
+});
+
+var fs = storage.createClient({
+    provider: 'filesystem',
+    root: path.join(__dirname, 'storage')
+});
+
+// Container
+
+fs.getContainers(function (err, containers) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    containers.forEach(function (c) {
+        console.log('filesystem: ', c.name);
         c.getFiles(function (err, files) {
             files.forEach(function (f) {
                 console.log('....', f.name);
