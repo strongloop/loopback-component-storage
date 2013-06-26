@@ -11,6 +11,8 @@
         "async": "latest"
     },
     "devDependencies": {
+        "express": "latest",
+        "formidable": "latest",
         "mocha": "latest",
         "supertest": "latest"
     },
