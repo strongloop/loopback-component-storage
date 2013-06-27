@@ -38,20 +38,22 @@ app.post('/upload/:container', function (req, res, next) {
 
 app.get('/download', function (req, res, next) {
     handler.client.getContainers(function (err, containers) {
-        var html = "<body><h1>Containers</h1><ul>";
+        var html = "<html><body><h1>Containers</h1><ul>";
         containers.forEach(function (f) {
-            html += "<li><a href='" + f.name + "'>" + f.name + "</a></li>"
+            html += "<li><a href='/download/" + f.name + "'>" + f.name + "</a></li>"
         });
+        html += "</body></html>";
         res.send(200, html);
     });
 });
 
 app.get('/download/:container', function (req, res, next) {
     handler.client.getFiles(req.params.container, function (err, files) {
-        var html = "<body><h1>Files</h1><ul>";
+        var html = "<html><body><h1>Files</h1><ul>";
         files.forEach(function (f) {
-            html += "<li><a href='" + f.container + "/" + f.name + "'>" + f.container + "/" + f.name + "</a></li>"
+            html += "<li><a href='/download/" + f.container + "/" + f.name + "'>" + f.container + "/" + f.name + "</a></li>"
         });
+        html += "</body></html>";
         res.send(200, html);
     });
 });
