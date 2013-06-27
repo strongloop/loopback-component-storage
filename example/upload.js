@@ -17,10 +17,14 @@ var handler = new Uploader({provider: 'filesystem', root: '/tmp/storage'});
 
 app.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-    var form = "<html><body><form method='POST' enctype='multipart/form-data' action='/upload/c1'>"
-        + " File to upload: <input type=file name=upfile><br>"
-        + " Notes about the file: <input type=text name=note><br>"
-        + " <input type=submit value=Upload></form></body></html>";
+    var form = "<html><body><h1>Storage Service Demo</h1>" +
+        "<a href='/download'>List all containers</a><p>" +
+        "Upload to container c1: <p>" +
+        "<form method='POST' enctype='multipart/form-data' action='/upload/c1'>"
+        + "File to upload: <input type=file name=upfile><br>"
+        + "Notes about the file: <input type=text name=note><br>"
+        + "<input type=submit value=Upload></form>" +
+        "</body></html>";
     res.send(form);
     res.end();
 });
@@ -42,18 +46,18 @@ app.get('/download', function (req, res, next) {
         containers.forEach(function (f) {
             html += "<li><a href='/download/" + f.name + "'>" + f.name + "</a></li>"
         });
-        html += "</body></html>";
+        html += "</ul><p><a href='/'>Home</a></p></body></html>";
         res.send(200, html);
     });
 });
 
 app.get('/download/:container', function (req, res, next) {
     handler.client.getFiles(req.params.container, function (err, files) {
-        var html = "<html><body><h1>Files</h1><ul>";
+        var html = "<html><body><h1>Files in container " + req.params.container + "</h1><ul>";
         files.forEach(function (f) {
             html += "<li><a href='/download/" + f.container + "/" + f.name + "'>" + f.container + "/" + f.name + "</a></li>"
         });
-        html += "</body></html>";
+        html += "</ul><p><a href='/'>Home</a></p></body></html>";
         res.send(200, html);
     });
 });
