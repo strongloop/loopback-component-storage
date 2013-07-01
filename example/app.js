@@ -1,4 +1,4 @@
-var storage = require('../lib/index');
+var storage = require('../lib/factory');
 var path = require('path');
 
 var rs = storage.createClient({
