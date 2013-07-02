@@ -1,4 +1,4 @@
-var Uploader = require('../lib/storage-handler.js');
+var StorageService = require('../');
 
 var express = require('express');
 var app = express();
@@ -13,7 +13,7 @@ app.configure(function () {
     app.use(app.router);
 });
 
-var handler = new Uploader({provider: 'filesystem', root: '/tmp/storage'});
+var handler = new StorageService({provider: 'filesystem', root: '/tmp/storage'});
 
 app.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
@@ -30,7 +30,7 @@ app.get('/', function (req, res, next) {
 });
 
 app.post('/upload/:container', function (req, res, next) {
-    handler.processUpload(req, res, function (err, result) {
+    handler.upload(req, res, function (err, result) {
         if (!err) {
             res.setHeader('Content-Type', 'application/json');
             res.send(200, result);
@@ -41,7 +41,7 @@ app.post('/upload/:container', function (req, res, next) {
 });
 
 app.get('/download', function (req, res, next) {
-    handler.client.getContainers(function (err, containers) {
+    handler.getContainers(function (err, containers) {
         var html = "<html><body><h1>Containers</h1><ul>";
         containers.forEach(function (f) {
             html += "<li><a href='/download/" + f.name + "'>" + f.name + "</a></li>"
@@ -52,7 +52,7 @@ app.get('/download', function (req, res, next) {
 });
 
 app.get('/download/:container', function (req, res, next) {
-    handler.client.getFiles(req.params.container, function (err, files) {
+    handler.getFiles(req.params.container, function (err, files) {
         var html = "<html><body><h1>Files in container " + req.params.container + "</h1><ul>";
         files.forEach(function (f) {
             html += "<li><a href='/download/" + f.container + "/" + f.name + "'>" + f.container + "/" + f.name + "</a></li>"
@@ -63,7 +63,7 @@ app.get('/download/:container', function (req, res, next) {
 });
 
 app.get('/download/:container/:file', function (req, res, next) {
-    handler.processDownload(req, res, function (err, result) {
+    handler.download(req, res, function (err, result) {
         if (err) {
             res.send(500, err);
         }
@@ -71,3 +71,4 @@ app.get('/download/:container/:file', function (req, res, next) {
 });
 
 app.listen(app.get('port'));
+console.log('http://127.0.0.1:' + app.get('port'));
