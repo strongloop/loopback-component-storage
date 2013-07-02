@@ -1,7 +1,7 @@
-var storage = require('../lib/factory');
+var storage = require('../');
 var path = require('path');
 
-var rs = storage.createClient({
+var rs = storage({
     provider: 'rackspace',
     username: 'strongloop',
     apiKey: 'your-rackspace-api-key'
@@ -39,7 +39,7 @@ rs.getContainers(function (err, containers) {
  */
 
 
-var s3 = storage.createClient({
+var s3 = storage({
     provider: 'amazon',
     key: 'your-amazon-key',
     keyId: 'your-amazon-key-id'
@@ -60,7 +60,7 @@ s3.getContainers(function (err, containers) {
     });
 });
 
-var fs = storage.createClient({
+var fs = storage({
     provider: 'filesystem',
     root: path.join(__dirname, 'storage')
 });
