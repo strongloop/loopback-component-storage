@@ -2,7 +2,7 @@
     "name": "asteroid-storage-service",
     "description": "Asteroid Storage Service",
     "version": "0.0.1",
-    "main": "lib/index.js",
+    "main": "lib/factory.js",
     "scripts": {
         "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
     },
