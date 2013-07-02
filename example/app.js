@@ -1,7 +1,7 @@
-var storage = require('../');
+var StorageService = require('../');
 var path = require('path');
 
-var rs = storage({
+var rs = StorageService({
     provider: 'rackspace',
     username: 'strongloop',
     apiKey: 'a51076644fc37583bd87dd648b58777e'
@@ -39,7 +39,7 @@ rs.getContainers(function (err, containers) {
  */
 
 
-var s3 = storage({
+var s3 = StorageService({
     provider: 'amazon',
     key: '+Y5mivLY+bqneQttRwXoIkqKxyBvIKMr0bFTht3r',
     keyId: 'AKIAI7F2SZAWNCTPNVYA'
@@ -60,7 +60,7 @@ s3.getContainers(function (err, containers) {
     });
 });
 
-var fs = storage({
+var fs = StorageService({
     provider: 'filesystem',
     root: path.join(__dirname, 'storage')
 });
