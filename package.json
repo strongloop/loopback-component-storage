@@ -12,6 +12,7 @@
     },
     "devDependencies": {
         "express": "latest",
+        "asteroid": "git+ssh://git@github.com/strongloop/asteroid.git",
         "formidable": "latest",
         "mocha": "latest",
         "supertest": "latest"
