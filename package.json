@@ -15,7 +15,8 @@
         "asteroid": "git+ssh://git@github.com/strongloop/asteroid.git",
         "formidable": "latest",
         "mocha": "latest",
-        "supertest": "latest"
+        "supertest": "latest",
+        "mkdirp": "latest"
     },
     "repository": {
         "type": "git",
