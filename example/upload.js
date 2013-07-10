@@ -13,14 +13,18 @@ app.configure(function () {
     app.use(app.router);
 });
 
+// Create the container
+var mkdirp = require('mkdirp');
+mkdirp.sync('/tmp/storage/con1');
+
 var handler = new StorageService({provider: 'filesystem', root: '/tmp/storage'});
 
 app.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
     var form = "<html><body><h1>Storage Service Demo</h1>" +
         "<a href='/download'>List all containers</a><p>" +
-        "Upload to container c1: <p>" +
-        "<form method='POST' enctype='multipart/form-data' action='/upload/c1'>"
+        "Upload to container con1: <p>" +
+        "<form method='POST' enctype='multipart/form-data' action='/upload/con1'>"
         + "File to upload: <input type=file name=uploadedFiles multiple=true><br>"
         + "Notes about the file: <input type=text name=note><br>"
         + "<input type=submit value=Upload></form>" +
