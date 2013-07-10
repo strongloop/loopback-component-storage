@@ -60,14 +60,21 @@ s3.getContainers(function (err, containers) {
     });
 });
 
-var fs = StorageService({
+
+var fs = require('fs');
+var path = require('path');
+var stream = s3.uploadStream('con1','test.jpg');
+var input = fs.createReadStream(path.join(__dirname, 'test.jpg')).pipe(stream);
+
+
+var local = StorageService({
     provider: 'filesystem',
     root: path.join(__dirname, 'storage')
 });
 
 // Container
 
-fs.getContainers(function (err, containers) {
+local.getContainers(function (err, containers) {
     if (err) {
         console.error(err);
         return;
@@ -81,3 +88,4 @@ fs.getContainers(function (err, containers) {
         });
     });
 });
+
