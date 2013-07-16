@@ -1,16 +1,16 @@
-var asteroid = require('asteroid')
-    , app = module.exports = asteroid();
+var loopback = require('loopback')
+    , app = module.exports = loopback();
 
 // var StorageService = require('../');
 
 // expose a rest api
-app.use(asteroid.rest());
+app.use(loopback.rest());
 
 app.configure(function () {
     app.set('port', process.env.PORT || 3000);
 });
 
-var ds = asteroid.createDataSource({
+var ds = loopback.createDataSource({
     connector: require('../lib/storage-connector'),
     provider: 'filesystem',
     root: '/tmp/storage'

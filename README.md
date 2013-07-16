@@ -1,4 +1,4 @@
-asteroid-storage-service
+loopback-storage-service
 ========================
 
 Aseteroid Storage Service
@@ -6,12 +6,12 @@ Aseteroid Storage Service
 <a name="storage"></a>
 ## Storage
 
-The `asteroid-storage-service` service is designed to make it easy to upload and download files to various infrastructure providers. **_Special attention has been paid so that methods are streams and pipe-capable._**
+The `loopback-storage-service` service is designed to make it easy to upload and download files to various infrastructure providers. **_Special attention has been paid so that methods are streams and pipe-capable._**
 
-To get started with a `asteroid-storage-service` provider just create one:
+To get started with a `loopback-storage-service` provider just create one:
 
 ``` js
-  var storageService = require('asteroid-storage-service')({
+  var storageService = require('loopback-storage-service')({
     //
     // The name of the provider (e.g. "file")
     //
@@ -50,7 +50,7 @@ Both the `.upload(options)` and `.download(options)` have had **careful attentio
 
 ### Upload a File
 ``` js
-  var storage = require('asteroid-storage-service'),
+  var storage = require('loopback-storage-service'),
       fs = require('fs');
   
   var storageService = storage({ /* ... */ });
@@ -60,7 +60,7 @@ Both the `.upload(options)` and `.download(options)` have had **careful attentio
 
 ### Download a File
 ``` js
-  var storage = require('asteroid-storage-service'),
+  var storage = require('loopback-storage-service'),
       fs = require('fs');
   
   var storageService = storage({ /* ... */ });
