@@ -4,7 +4,11 @@
     "version": "0.0.1",
     "main": "lib/index.js",
     "scripts": {
-        "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
+        "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js",
+	"blanket": {
+      	  "pattern": "//^((?!(node_modules|test)).)*$/"
+    	},
+    	"coverage": "mocha -r blanket -R html-cov > coverage_loopback-storage-service.html"
     },
     "dependencies": {
         "pkgcloud": "latest",
@@ -16,7 +20,8 @@
         "formidable": "latest",
         "mocha": "latest",
         "supertest": "latest",
-        "mkdirp": "latest"
+        "mkdirp": "latest",
+	"blanket": "latest"
     },
     "repository": {
         "type": "git",
