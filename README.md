@@ -1,12 +1,10 @@
-loopback-storage-service
-========================
+# loopback-storage-service
 
-Aseteroid Storage Service
+LoopBack Storage Service
 
-<a name="storage"></a>
 ## Storage
 
-The `loopback-storage-service` service is designed to make it easy to upload and download files to various infrastructure providers. **_Special attention has been paid so that methods are streams and pipe-capable._**
+The `loopback-storage-service` module is designed to make it easy to upload and download files to various infrastructure providers.
 
 To get started with a `loopback-storage-service` provider just create one:
 
@@ -25,20 +23,42 @@ To get started with a `loopback-storage-service` provider just create one:
 
 Each compute provider takes different credentials to authenticate; these details about each specific provider can be found below:
 
-* [Azure](docs/providers/azure.md#using-storage)
-* [Rackspace](docs/providers/rackspace/storage.md)
-* [Amazon](docs/providers/amazon.md#using-storage)
+* Amazon
+
+
+    {
+        provider: 'amazon',
+        key: '...',
+        keyId: '...'
+    }
+
+* Rackspace
+
+
+    {
+        provider: 'rackspace',
+        username: '...',
+        apiKey: '...'
+    }
+
+* Azure
+
+* Local File System
+
+
+    {
+        provider: 'filesystem',
+        root: '/tmp/storage'
+    }
 
 Each instance of `storage.Client` returned from `storage.createClient` has a set of uniform APIs:
 
-<a name="container"></a>
 ### Container
 * `storageService.getContainers(function (err, containers) { })`
 * `storageService.createContainer(options, function (err, container) { })`
 * `storageService.destroyContainer(containerName, function (err) { })`
 * `storageService.getContainer(containerName, function (err, container) { })`
 
-<a name="file"></a>
 ### File
 * `storageService.upload(options, function (err) { })`
 * `storageService.download(options, function (err) { })`
