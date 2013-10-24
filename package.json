@@ -11,11 +11,11 @@
     "coverage": "mocha -r blanket -R html-cov > coverage_loopback-storage-service.html"
   },
   "dependencies": {
-    "pkgcloud": "~0.8.11",
+    "pkgcloud": "~0.8.13",
     "async": "~0.2.9"
   },
   "devDependencies": {
-    "express": "~3.4.0",
+    "express": "~3.4.3",
     "loopback": "git+ssh://git@github.com/strongloop/loopback.git",
     "formidable": "~1.0.14",
     "mocha": "~1.13.0",
