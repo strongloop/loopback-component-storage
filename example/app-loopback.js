@@ -18,9 +18,9 @@ var ds = loopback.createDataSource({
     root: path.join(__dirname, 'storage')
 });
 
-var Container = ds.createModel('container');
+var Storage = ds.createModel('container');
 
-app.model(Container);
+app.model(Storage);
 
 app.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');

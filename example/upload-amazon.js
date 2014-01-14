@@ -1,4 +1,4 @@
-var StorageService = require('../');
+var StorageService = require('../').StorageService;
 
 var express = require('express');
 var app = express();

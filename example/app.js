@@ -1,4 +1,4 @@
-var StorageService = require('../');
+var StorageService = require('../').StorageService;
 var path = require('path');
 
 var rs = StorageService({
