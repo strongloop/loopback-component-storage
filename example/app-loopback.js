@@ -3,6 +3,8 @@ var loopback = require('loopback')
 
 var path = require('path');
 
+app.use(app.router);
+
 // expose a rest api
 app.use(loopback.rest());
 
