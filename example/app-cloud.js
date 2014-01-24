@@ -1,10 +1,11 @@
 var StorageService = require('../').StorageService;
 var path = require('path');
+var providers = require('./providers.json');
 
 var rs = StorageService({
   provider: 'rackspace',
-  username: 'strongloop',
-  apiKey: 'your-rackspace-api-key'
+  username: providers.rackspace.username,
+  apiKey: providers.rackspace.apiKey
 });
 
 // Container
@@ -40,8 +41,8 @@ rs.getContainers(function (err, containers) {
 
 var s3 = StorageService({
   provider: 'amazon',
-  key: 'your-amazon-key',
-  keyId: 'your-amazon-key-id'
+  key: providers.amazon.key,
+  keyId: providers.amazon.keyId
 });
 
 s3.getContainers(function (err, containers) {

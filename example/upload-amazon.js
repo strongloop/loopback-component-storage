@@ -1,5 +1,5 @@
 var StorageService = require('../').StorageService;
-
+var providers = require('./providers.json');
 var express = require('express');
 var app = express();
 
@@ -16,8 +16,8 @@ app.configure(function () {
 var handler = new StorageService(
   {
     provider: 'amazon',
-    key: 'your-amazon-key',
-    keyId: 'your-amazon-key-id'
+    key: providers.amazon.key,
+    keyId: providers.amazon.keyId
   });
 
 app.get('/', function (req, res, next) {

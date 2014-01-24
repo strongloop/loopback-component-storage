@@ -1,0 +1,10 @@
+{
+  "rackspace": {
+    "username": "strongloop",
+    "apiKey": "your-rackspace-api-key"
+  },
+  "amazon": {
+    "key": "your-amazon-key",
+    "keyId": "your-amazon-key-id"
+  }
+}
