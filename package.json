@@ -2,12 +2,12 @@
   "name": "loopback-storage-service",
   "description": "Loopback Storage Service",
   "version": "1.0.0",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
   },
   "dependencies": {
-    "pkgcloud": "~0.8.14",
+    "pkgcloud": "~0.8.17",
     "async": "~0.2.9"
   },
   "devDependencies": {

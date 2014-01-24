@@ -1,4 +1,4 @@
-var StorageService = require('../lib/index.js');
+var StorageService = require('../lib/storage-service.js');
 
 var assert = require('assert');
 var path = require('path');
