@@ -67,7 +67,7 @@ app.get('/download/:container', function (req, res, next) {
 });
 
 app.get('/download/:container/:file', function (req, res, next) {
-  handler.download(req, res, function (err, result) {
+  handler.download(req.params.container, req.params.file, res, function (err, result) {
     if (err) {
       res.send(500, err);
     }
