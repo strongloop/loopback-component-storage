@@ -48,6 +48,7 @@ describe('storage service', function () {
 
     request('http://localhost:3000')
       .get('/containers/album1/download/test.jpg')
+      .expect('Content-Type', 'image/jpeg')
       .expect(200, function (err, res) {
         done();
       });
@@ -57,6 +58,7 @@ describe('storage service', function () {
 
     request('http://localhost:3000')
       .get('/containers/album1/download/test_not_exist.jpg')
+      .expect('Content-Type', /json/)
       .expect(500, function (err, res) {
         assert(res.body.error);
         done();
