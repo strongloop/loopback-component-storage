@@ -29,6 +29,81 @@ describe('storage service', function () {
     server.close();
   });
 
+  it('should create a container', function (done) {
+
+    request('http://localhost:3000')
+      .post('/containers')
+      .send({name: 'test-container'})
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert.equal(res.body.name, 'test-container');
+        done();
+      });
+  });
+
+  it('should get a container', function (done) {
+
+    request('http://localhost:3000')
+      .get('/containers/test-container')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert.equal(res.body.name, 'test-container');
+        done();
+      });
+  });
+
+  it('should list containers', function (done) {
+
+    request('http://localhost:3000')
+      .get('/containers')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert(Array.isArray(res.body));
+        assert.equal(res.body.length, 2);
+        done();
+      });
+  });
+
+  it('should delete a container', function (done) {
+
+    request('http://localhost:3000')
+      .del('/containers/test-container')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        done();
+      });
+  });
+
+  it('should list containers after delete', function (done) {
+
+    request('http://localhost:3000')
+      .get('/containers')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert(Array.isArray(res.body));
+        assert.equal(res.body.length, 1);
+        done();
+      });
+  });
+
+  it('should list files', function (done) {
+
+    request('http://localhost:3000')
+      .get('/containers/album1/files')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert(Array.isArray(res.body));
+        done();
+      });
+  });
+
   it('uploads files', function (done) {
 
     request('http://localhost:3000')
@@ -44,11 +119,34 @@ describe('storage service', function () {
       });
   });
 
+  it('should get file by name', function (done) {
+
+    request('http://localhost:3000')
+      .get('/containers/album1/files/test.jpg')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert.equal(res.body.name, 'test.jpg');
+        done();
+      });
+  });
+
   it('downloads files', function (done) {
 
     request('http://localhost:3000')
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
+      .expect(200, function (err, res) {
+        done();
+      });
+  });
+
+  it('should delete a file', function (done) {
+
+    request('http://localhost:3000')
+      .del('/containers/album1/files/test.jpg')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         done();
       });
