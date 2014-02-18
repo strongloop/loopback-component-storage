@@ -24,6 +24,6 @@
   },
   "license": {
     "name": "Dual Artistic-2.0/StrongLoop",
-    "url": "https://github.com/strongloop/loopback-workspace/blob/master/LICENSE"
+    "url": "https://github.com/strongloop/loopback-strorage-service/blob/master/LICENSE"
   }
 }
