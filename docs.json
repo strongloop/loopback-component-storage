@@ -1,8 +1,8 @@
 {
   "content": [
-    { "title": "Container API", "depth": 2 },
-    "lib/models/container.js",
-    { "title": "File API", "depth": 2 },
-    "lib/models/file.js"
+    { "title": "LoopBack Storage Service", "depth": 2 },
+    "lib/storage-service.js",    
+    { "title": "Container API", "depth": 3 },
+    "lib/storage-handler.js"
   ]
 }
