@@ -1,27 +1,60 @@
 # loopback-storage-service
 
-LoopBack Storage Service
+LoopBack storage service provides Node.js and REST APIs to manage binary contents
+using pluggable storage providers, such as local file systems, Amazon S3, or
+Rackspace cloud files. We use [pkgcloud](https://github.com/pkgcloud/pkgcloud) to support the cloud based
+storage services including:
 
-## Storage
+- Amazon
+- Rackspace
+- Openstack
+- Azure
 
-The `loopback-storage-service` module is designed to make it easy to upload and download files to various infrastructure providers.
+The binary artifacts are organized with containers and files. A container is the
+collection of files. Each file will belong to a container.
 
-To get started with a `loopback-storage-service` provider just create one:
+## Define a model with the loopback-storage-service connector
 
-``` js
-  var storageService = require('loopback-storage-service')({
-    //
-    // The name of the provider (e.g. "file")
-    //
-    provider: 'provider-name',
-  
-    //
-    // ... Provider specific credentials
-    //
-  });
-```
+LoopBack exposes the APIs using a model that is attached to a data source configured
+with the loopback-storage-service connector.
 
-Each compute provider takes different credentials to authenticate; these details about each specific provider can be found below:
+    var ds = loopback.createDataSource({
+        connector: require('loopback-storage-service'),
+        provider: 'filesystem',
+        root: path.join(__dirname, 'storage')
+    });
+
+    var container = ds.createModel('container');
+
+The following methods are mixed into the model class:
+
+- getContainers(cb): List all containers
+- createContainer(options, cb): Create a new container
+- destroyContainer(container, cb): Destroy an existing container
+- getContainer(container, cb): Look up a container by name
+
+- uploadStream(container, file, options, cb): Get the stream for uploading
+- downloadStream(container, file, options, cb): Get the stream for downloading
+
+- getFiles(container, download, cb): List all files within the given container
+- getFile(container, file, cb): Look up a file by name within the given container
+- removeFile(container, file, cb): Remove a file by name  within the given container
+
+- upload(req, res, cb): Handle the file upload at the server side
+- download(container, file, res, cb): Handle the file download at the server side
+
+## Configure the storage providers
+
+Each storage provider takes different settings; these details about each specific
+provider can be found below:
+
+* Local File System
+
+
+    {
+        provider: 'filesystem',
+        root: '/tmp/storage'
+    }
 
 * Amazon
 
@@ -41,53 +74,62 @@ Each compute provider takes different credentials to authenticate; these details
         apiKey: '...'
     }
 
-* Azure
-
-* Local File System
+* OpenStack
 
 
     {
-        provider: 'filesystem',
-        root: '/tmp/storage'
+        provider: 'openstack',
+        username: 'your-user-name',
+        password: 'your-password',
+        authUrl: 'https://your-identity-service'
     }
 
-Each instance of `storage.Client` returned from `storage.createClient` has a set of uniform APIs:
+* Azure
 
-### Container
-* `storageService.getContainers(function (err, containers) { })`
-* `storageService.createContainer(options, function (err, container) { })`
-* `storageService.destroyContainer(containerName, function (err) { })`
-* `storageService.getContainer(containerName, function (err, container) { })`
 
-### File
-* `storageService.upload(options, function (err) { })`
-* `storageService.download(options, function (err) { })`
-* `storageService.getFiles(container, function (err, files) { })`
-* `storageService.getFile(container, file, function (err, server) { })`
-* `storageService.removeFile(container, file, function (err) { })`
+    {
+        provider: 'azure',
+        storageAccount: "test-storage-account",         // Name of your storage account
+        storageAccessKey: "test-storage-access-key" // Access key for storage account
+    }
 
-Both the `.upload(options)` and `.download(options)` have had **careful attention paid to make sure they are pipe and stream capable:**
 
-### Upload a File
-``` js
-  var storage = require('loopback-storage-service'),
-      fs = require('fs');
-  
-  var storageService = storage({ /* ... */ });
-  
-  fs.createReadStream('a-file.txt').pipe(storageService.uploadStream('a-container','remote-file-name.txt'));
-```
+## REST APIs
 
-### Download a File
-``` js
-  var storage = require('loopback-storage-service'),
-      fs = require('fs');
-  
-  var storageService = storage({ /* ... */ });
-  
-  storageService.downloadStream({
-    container: 'a-container',
-    remote: 'remote-file-name.txt'
-  }).pipe(fs.createWriteStream('a-file.txt'));
-```
+- GET /api/containers
 
+List all containers
+
+- GET /api/containers/:container
+
+Get information about a container by name
+
+- POST /api/containers
+
+Create a new container
+
+- DELETE /api/containers/:container
+
+Delete an existing container by name
+
+- GET /api/containers/:container/files
+
+List all files within a given container by name
+
+- GET /api/containers/:container/files/:file
+
+Get information for a file within a given container by name
+
+- DELETE /api/containers/:container/files/:file
+
+Delete a file within a given container by name
+
+- POST /api/containers/:container/upload
+
+Upload one or more files into the given container by name. The request body should
+use [multipart/form-data](https://www.ietf.org/rfc/rfc2388.txt) which the file input
+type for HTML uses.
+
+- GET /api/containers/:container/download/:file
+
+Download a file within a given container by name
