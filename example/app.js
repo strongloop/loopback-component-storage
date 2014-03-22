@@ -25,6 +25,7 @@ var container = ds.createModel('container');
 
 app.model(container);
 
+/*
 app.get('/', function (req, res, next) {
   res.setHeader('Content-Type', 'text/html');
   var form = "<html><body><h1>Storage Service Demo</h1>" +
@@ -38,6 +39,7 @@ app.get('/', function (req, res, next) {
   res.send(form);
   res.end();
 });
+*/
 
 app.listen(app.get('port'));
 console.log('http://127.0.0.1:' + app.get('port'));
