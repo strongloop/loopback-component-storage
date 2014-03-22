@@ -6,7 +6,10 @@ var path = require('path');
 app.use(app.router);
 
 // expose a rest api
-app.use(loopback.rest());
+app.use('/api', loopback.rest());
+
+app.use(loopback.static(path.join(__dirname, 'public')));
+
 
 app.configure(function () {
   app.set('port', process.env.PORT || 3000);
@@ -25,7 +28,7 @@ app.model(container);
 app.get('/', function (req, res, next) {
   res.setHeader('Content-Type', 'text/html');
   var form = "<html><body><h1>Storage Service Demo</h1>" +
-    "<a href='/containers'>List all containers</a><p>" +
+    "<a href='/api/containers'>List all containers</a><p>" +
     "Upload to container c1: <p>" +
     "<form method='POST' enctype='multipart/form-data' action='/containers/container1/upload'>"
     + "File to upload: <input type=file name=uploadedFiles multiple=true><br>"
