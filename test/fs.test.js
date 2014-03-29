@@ -3,6 +3,17 @@ var FileSystemProvider = require('../lib/providers/filesystem/index.js').Client;
 var assert = require('assert');
 var path = require('path');
 
+function verifyMetadata(fileOrContainer, name) {
+  assert(fileOrContainer.metadata);
+  assert.equal(fileOrContainer.metadata.name, name);
+  assert(fileOrContainer.metadata.uid === undefined);
+  assert(fileOrContainer.metadata.gid === undefined);
+  assert(fileOrContainer.metadata.atime);
+  assert(fileOrContainer.metadata.ctime);
+  assert(fileOrContainer.metadata.mtime);
+  assert.equal(typeof fileOrContainer.metadata.size, 'number');
+}
+
 describe('FileSystem based storage provider', function () {
 
   describe('container apis', function () {
@@ -33,6 +44,7 @@ describe('FileSystem based storage provider', function () {
     it('should create a new container', function (done) {
       client.createContainer({name: 'c1'}, function (err, container) {
         assert(!err);
+        verifyMetadata(container, 'c1');
         done(err, container);
       });
     });
@@ -40,6 +52,7 @@ describe('FileSystem based storage provider', function () {
     it('should get a container c1', function (done) {
       client.getContainer('c1', function (err, container) {
         assert(!err);
+        verifyMetadata(container, 'c1');
         done(err, container);
       });
     });
@@ -114,6 +127,7 @@ describe('FileSystem based storage provider', function () {
       client.getFile('c1', 'f1.txt', function (err, f) {
         assert(!err);
         assert.ok(f);
+        verifyMetadata(f, 'f1.txt');
         done(err, f);
       });
     });
