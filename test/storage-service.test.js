@@ -20,6 +20,7 @@ describe('Storage service', function () {
     it('should create a new container', function (done) {
       storageService.createContainer({name: 'c1'}, function (err, container) {
         assert(!err);
+        assert(container.metadata);
         done(err, container);
       });
     });
@@ -27,6 +28,7 @@ describe('Storage service', function () {
     it('should get a container c1', function (done) {
       storageService.getContainer('c1', function (err, container) {
         assert(!err);
+        assert(container.metadata);
         done(err, container);
       });
     });
@@ -97,6 +99,7 @@ describe('Storage service', function () {
       storageService.getFile('c1', 'f1.txt', function (err, f) {
         assert(!err);
         assert.ok(f);
+        assert(f.metadata);
         done(err, f);
       });
     });
