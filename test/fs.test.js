@@ -4,14 +4,14 @@ var assert = require('assert');
 var path = require('path');
 
 function verifyMetadata(fileOrContainer, name) {
-  assert(fileOrContainer.metadata);
-  assert.equal(fileOrContainer.metadata.name, name);
-  assert(fileOrContainer.metadata.uid === undefined);
-  assert(fileOrContainer.metadata.gid === undefined);
-  assert(fileOrContainer.metadata.atime);
-  assert(fileOrContainer.metadata.ctime);
-  assert(fileOrContainer.metadata.mtime);
-  assert.equal(typeof fileOrContainer.metadata.size, 'number');
+  assert(fileOrContainer.getMetadata());
+  assert.equal(fileOrContainer.getMetadata().name, name);
+  assert(fileOrContainer.getMetadata().uid === undefined);
+  assert(fileOrContainer.getMetadata().gid === undefined);
+  assert(fileOrContainer.getMetadata().atime);
+  assert(fileOrContainer.getMetadata().ctime);
+  assert(fileOrContainer.getMetadata().mtime);
+  assert.equal(typeof fileOrContainer.getMetadata().size, 'number');
 }
 
 describe('FileSystem based storage provider', function () {
