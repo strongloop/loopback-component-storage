@@ -1,7 +1,8 @@
 {
   "rackspace": {
-    "username": "strongloop",
-    "apiKey": "your-rackspace-api-key"
+    "username": "your-rackspace-username",
+    "apiKey": "your-rackspace-api-key",
+    "region": "DFW"
   },
   "amazon": {
     "key": "your-amazon-key",

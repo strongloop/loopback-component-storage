@@ -17,6 +17,34 @@ var ds = loopback.createDataSource({
 var Container = ds.createModel('container');
 app.model(Container);
 
+/*!
+ * Verify that the JSON response has the correct metadata properties.
+ * Please note the metadata vary by storage providers. This test assumes
+ * the 'filesystem' provider.
+ *
+ * @param {String} containerOrFile The container/file object
+ * @param {String} [name] The name to be checked if not undefined
+ */
+function verifyMetadata(containerOrFile, name) {
+  assert(containerOrFile);
+
+  // Name
+  if (name) {
+    assert.equal(containerOrFile.name, name);
+  }
+  // No sensitive information
+  assert(containerOrFile.uid === undefined);
+  assert(containerOrFile.gid === undefined);
+
+  // Timestamps
+  assert(containerOrFile.atime);
+  assert(containerOrFile.ctime);
+  assert(containerOrFile.mtime);
+
+  // Size
+  assert.equal(typeof containerOrFile.size, 'number');
+}
+
 describe('storage service', function () {
   var server = null;
   before(function (done) {
@@ -38,7 +66,7 @@ describe('storage service', function () {
       .set('Content-Type', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
-        assert.equal(res.body.name, 'test-container');
+        verifyMetadata(res.body, 'test-container');
         done();
       });
   });
@@ -50,7 +78,7 @@ describe('storage service', function () {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
-        assert.equal(res.body.name, 'test-container');
+        verifyMetadata(res.body, 'test-container');
         done();
       });
   });
@@ -64,6 +92,9 @@ describe('storage service', function () {
       .expect(200, function (err, res) {
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 2);
+        res.body.forEach(function(c) {
+          verifyMetadata(c);
+        });
         done();
       });
   });
@@ -100,6 +131,9 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert(Array.isArray(res.body));
+        res.body.forEach(function(f) {
+          verifyMetadata(f);
+        });
         done();
       });
   });
@@ -126,7 +160,7 @@ describe('storage service', function () {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
-        assert.equal(res.body.name, 'test.jpg');
+        verifyMetadata(res.body, 'test.jpg');
         done();
       });
   });
