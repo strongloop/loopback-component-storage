@@ -1,91 +1,45 @@
-var StorageService = require('../');
+var loopback = require('loopback')
+  , app = module.exports = loopback();
+
 var path = require('path');
 
-var rs = StorageService({
-    provider: 'rackspace',
-    username: 'strongloop',
-    apiKey: 'your-rackspace-api-key'
+app.use(app.router);
+
+// expose a rest api
+app.use('/api', loopback.rest());
+
+app.use(loopback.static(path.join(__dirname, 'public')));
+
+
+app.configure(function () {
+  app.set('port', process.env.PORT || 3000);
 });
 
-// Container
-
-rs.getContainers(function (err, containers) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    containers.forEach(function (c) {
-        console.log('rackspace: ', c.name);
-        c.getFiles(function (err, files) {
-            files.forEach(function (f) {
-                console.log('....', f.name);
-            });
-        });
-    });
+var ds = loopback.createDataSource({
+  connector: require('../index'),
+  provider: 'filesystem',
+  root: path.join(__dirname, 'storage')
 });
+
+var container = ds.createModel('container');
+
+app.model(container);
 
 /*
- client.createContainer(options, function (err, container) { });
- client.destroyContainer(containerName, function (err) { });
- client.getContainer(containerName, function (err, container) { });
-
- // File
-
- client.upload(options, function (err) { });
- client.download(options, function (err) { });
- client.getFiles(container, function (err, files) { });
- client.getFile(container, file, function (err, server) { });
- client.removeFile(container, file, function (err) { });
- */
-
-
-var s3 = StorageService({
-    provider: 'amazon',
-    key: 'your-amazon-key',
-    keyId: 'your-amazon-key-id'
+app.get('/', function (req, res, next) {
+  res.setHeader('Content-Type', 'text/html');
+  var form = "<html><body><h1>Storage Service Demo</h1>" +
+    "<a href='/api/containers'>List all containers</a><p>" +
+    "Upload to container c1: <p>" +
+    "<form method='POST' enctype='multipart/form-data' action='/containers/container1/upload'>"
+    + "File to upload: <input type=file name=uploadedFiles multiple=true><br>"
+    + "Notes about the file: <input type=text name=note><br>"
+    + "<input type=submit value=Upload></form>" +
+    "</body></html>";
+  res.send(form);
+  res.end();
 });
+*/
 
-s3.getContainers(function (err, containers) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    containers.forEach(function (c) {
-        console.log('amazon: ', c.name);
-        c.getFiles(function (err, files) {
-            files.forEach(function (f) {
-                console.log('....', f.name);
-            });
-        });
-    });
-});
-
-
-var fs = require('fs');
-var path = require('path');
-var stream = s3.uploadStream('con1','test.jpg');
-var input = fs.createReadStream(path.join(__dirname, 'test.jpg')).pipe(stream);
-
-
-var local = StorageService({
-    provider: 'filesystem',
-    root: path.join(__dirname, 'storage')
-});
-
-// Container
-
-local.getContainers(function (err, containers) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    containers.forEach(function (c) {
-        console.log('filesystem: ', c.name);
-        c.getFiles(function (err, files) {
-            files.forEach(function (f) {
-                console.log('....', f.name);
-            });
-        });
-    });
-});
-
+app.listen(app.get('port'));
+console.log('http://127.0.0.1:' + app.get('port'));

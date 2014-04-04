@@ -1,0 +1,8 @@
+{
+  "content": [
+    { "title": "LoopBack Storage Service", "depth": 2 },
+    "lib/storage-service.js",    
+    { "title": "Storage Handler API", "depth": 3 },
+    "lib/storage-handler.js"
+  ]
+}
