@@ -8,12 +8,12 @@
   },
   "dependencies": {
     "pkgcloud": "~0.9.4",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "formidable": "~1.0.14"
   },
   "devDependencies": {
     "express": "~3.4.0",
     "loopback": "1.x.x",
-    "formidable": "~1.0.14",
     "mocha": "~1.18.2",
     "supertest": "~0.10.0",
     "mkdirp": "~0.3.5"
