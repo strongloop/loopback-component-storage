@@ -1,6 +1,8 @@
-# loopback-component-storage
+# LoopBack Storage Component
 
-LoopBack storage service provides Node.js and REST APIs to manage binary contents
+**NOTE: The loopback-component-storage module supersedes [loopback-storage-service](https://www.npmjs.org/package/loopback-storage-service). Please update your package.json accordingly.**
+
+LoopBack storage component provides Node.js and REST APIs to manage binary contents
 using pluggable storage providers, such as local file systems, Amazon S3, or
 Rackspace cloud files. We use [pkgcloud](https://github.com/pkgcloud/pkgcloud) to support the cloud based
 storage services including:
