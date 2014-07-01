@@ -1,4 +1,4 @@
-# loopback-storage-service
+# loopback-component-storage
 
 LoopBack storage service provides Node.js and REST APIs to manage binary contents
 using pluggable storage providers, such as local file systems, Amazon S3, or
@@ -13,13 +13,13 @@ storage services including:
 The binary artifacts are organized with containers and files. A container is the
 collection of files. Each file will belong to a container.
 
-## Define a model with the loopback-storage-service connector
+## Define a model with the loopback-component-storage connector
 
 LoopBack exposes the APIs using a model that is attached to a data source configured
-with the loopback-storage-service connector.
+with the loopback-component-storage connector.
 
     var ds = loopback.createDataSource({
-        connector: require('loopback-storage-service'),
+        connector: require('loopback-component-storage'),
         provider: 'filesystem',
         root: path.join(__dirname, 'storage')
     });
