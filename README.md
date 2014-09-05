@@ -27,6 +27,8 @@ with the loopback-component-storage connector.
     });
 
     var container = ds.createModel('container');
+    
+    app.model(container);
 
 The following methods are mixed into the model class:
 
