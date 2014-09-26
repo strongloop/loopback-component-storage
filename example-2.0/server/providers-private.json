@@ -1,0 +1,11 @@
+{
+  "rackspace": {
+    "username": "strongloop",
+    "apiKey": "a51076644fc37583bd87dd648b58777e",
+    "region": "DFW"
+  },
+  "amazon": {
+    "keyId": "AKIAJXSYYW7EAWTJYMLA",
+    "key": "TkW/9i7nNsOEg/vvYS4P/zexNrzDvkjQp3NwF7J7"
+  }
+}
