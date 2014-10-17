@@ -1,11 +1,30 @@
 {
-  "rackspace": {
+  "storage-rackspace": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
     "username": "strongloop",
     "apiKey": "a51076644fc37583bd87dd648b58777e",
     "region": "DFW"
   },
-  "amazon": {
+  "storage-amazon": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
     "keyId": "AKIAJXSYYW7EAWTJYMLA",
     "key": "TkW/9i7nNsOEg/vvYS4P/zexNrzDvkjQp3NwF7J7"
+  },
+  "storage-filesystem": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./server/storage"
+  },
+  "storage-azure": {
+      "name": "storage",
+      "connector": "loopback-component-storage",
+      "provider": "azure",
+      "protocol": "http",
+      "serversUrl": "blob.core.windows.net",
+      "storageAccount": "yourAzureAccount",
+      "storageAccessKey": "yourAzureKey"
   }
 }
