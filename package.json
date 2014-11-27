@@ -1,7 +1,7 @@
 {
   "name": "loopback-component-storage",
   "description": "Loopback Storage Service",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
@@ -25,5 +25,8 @@
   "license": {
     "name": "Dual Artistic-2.0/StrongLoop",
     "url": "https://github.com/strongloop/loopback-strorage-service/blob/master/LICENSE"
+  },
+  "optionalDependencies": {
+    "sl-blip": "http://blip.strongloop.com/loopback-component-storage@1.0.6"
   }
 }
