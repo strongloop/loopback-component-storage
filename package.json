@@ -7,16 +7,16 @@
     "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
   },
   "dependencies": {
-    "pkgcloud": "~0.9.6",
-    "async": "~0.9.0",
-    "formidable": "~1.0.14"
+    "pkgcloud": "^1.1.0",
+    "async": "^0.9.0",
+    "formidable": "^1.0.16"
   },
   "devDependencies": {
-    "express": "~3.4.0",
-    "loopback": "1.x.x",
-    "mocha": "~1.18.2",
-    "supertest": "~0.13.0",
-    "mkdirp": "~0.5.0"
+    "express": "^4.11.0",
+    "loopback": "^2.10.0",
+    "mocha": "^2.1.0",
+    "supertest": "^0.15.0",
+    "mkdirp": "^0.5.0"
   },
   "repository": {
     "type": "git",
