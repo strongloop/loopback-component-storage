@@ -3,15 +3,9 @@ var StorageService = require('../').StorageService;
 var express = require('express');
 var app = express();
 
-app.configure(function () {
-  app.set('port', process.env.PORT || 3001);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.favicon());
-  // app.use(express.logger('dev'));
-  app.use(express.methodOverride());
-  app.use(app.router);
-});
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 // Create the container
 var mkdirp = require('mkdirp');
@@ -19,7 +13,7 @@ mkdirp.sync('/tmp/storage/con1');
 
 var handler = new StorageService({provider: 'filesystem', root: '/tmp/storage'});
 
-app.get('/', function (req, res, next) {
+app.get('/', function(req, res, next) {
   res.setHeader('Content-Type', 'text/html');
   var form = "<html><body><h1>Storage Service Demo</h1>" +
     "<a href='/download'>List all containers</a><p>" +
@@ -33,43 +27,43 @@ app.get('/', function (req, res, next) {
   res.end();
 });
 
-app.post('/upload/:container', function (req, res, next) {
-  handler.upload(req, res, function (err, result) {
+app.post('/upload/:container', function(req, res, next) {
+  handler.upload(req, res, function(err, result) {
     if (!err) {
       res.setHeader('Content-Type', 'application/json');
-      res.send(200, result);
+      res.status(200).send(result);
     } else {
-      res.send(500, err);
+      res.status(500).send(err);
     }
   });
 });
 
-app.get('/download', function (req, res, next) {
-  handler.getContainers(function (err, containers) {
+app.get('/download', function(req, res, next) {
+  handler.getContainers(function(err, containers) {
     var html = "<html><body><h1>Containers</h1><ul>";
-    containers.forEach(function (f) {
+    containers.forEach(function(f) {
       html += "<li><a href='/download/" + f.name + "'>" + f.name + "</a></li>"
     });
     html += "</ul><p><a href='/'>Home</a></p></body></html>";
-    res.send(200, html);
+    res.status(200).send(html);
   });
 });
 
-app.get('/download/:container', function (req, res, next) {
-  handler.getFiles(req.params.container, function (err, files) {
+app.get('/download/:container', function(req, res, next) {
+  handler.getFiles(req.params.container, function(err, files) {
     var html = "<html><body><h1>Files in container " + req.params.container + "</h1><ul>";
-    files.forEach(function (f) {
+    files.forEach(function(f) {
       html += "<li><a href='/download/" + f.container + "/" + f.name + "'>" + f.container + "/" + f.name + "</a></li>"
     });
     html += "</ul><p><a href='/'>Home</a></p></body></html>";
-    res.send(200, html);
+    res.status(200).send(html);
   });
 });
 
-app.get('/download/:container/:file', function (req, res, next) {
-  handler.download(req.params.container, req.params.file, res, function (err, result) {
+app.get('/download/:container/:file', function(req, res, next) {
+  handler.download(req.params.container, req.params.file, res, function(err, result) {
     if (err) {
-      res.send(500, err);
+      res.status(500).send(err);
     }
   });
 });
