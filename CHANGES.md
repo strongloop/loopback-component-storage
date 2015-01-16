@@ -1,3 +1,13 @@
+2015-01-16, Version 1.1.0
+=========================
+
+ * Upgrade deps (Raymond Feng)
+
+ * Fix bad CLA URL in CONTRIBUTING.md (Ryan Graham)
+
+ * #4: Return a 404 if file doesn't exist (Timo Saikkonen)
+
+
 2014-11-27, Version 1.0.6
 =========================
 
