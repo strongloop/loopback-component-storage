@@ -8,6 +8,19 @@ var path = require('path');
 // expose a rest api
 app.use(loopback.rest());
 
+var dsImage = loopback.createDataSource({
+  connector: require('../lib/storage-connector'),
+  provider: 'filesystem',
+  root: path.join(__dirname, 'images'),
+
+  getFilename: function(fileInfo) {
+    return 'image-' + fileInfo.name;
+  }
+});
+
+var ImageContainer = dsImage.createModel('imageContainer');
+app.model(ImageContainer);
+
 var ds = loopback.createDataSource({
   connector: require('../lib/storage-connector'),
   provider: 'filesystem',
@@ -153,6 +166,21 @@ describe('storage service', function () {
       });
   });
 
+  it('uploads files with renamer', function (done) {
+
+    request('http://localhost:3000')
+      .post('/imageContainers/album1/upload')
+      .attach('image', path.join(__dirname, '../example/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert.deepEqual(res.body, {"result": {"files": {"image": [
+          {"container": "album1", "name": "image-test.jpg", "type": "image/jpeg"}
+        ]}, "fields": {}}});
+        done();
+      });
+  });
+
   it('should get file by name', function (done) {
 
     request('http://localhost:3000')
@@ -161,6 +189,18 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         verifyMetadata(res.body, 'test.jpg');
+        done();
+      });
+  });
+
+  it('should get file by renamed file name', function (done) {
+
+    request('http://localhost:3000')
+      .get('/imageContainers/album1/files/image-test.jpg')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        verifyMetadata(res.body, 'image-test.jpg');
         done();
       });
   });
