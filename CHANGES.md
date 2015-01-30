@@ -1,3 +1,11 @@
+2015-01-30, Version 1.2.0
+=========================
+
+ * Fix deprecation (Raymond Feng)
+
+ * Adding key renaming support on Service.upload and Handler.upload (Benjamin Boudreau)
+
+
 2015-01-16, Version 1.1.0
 =========================
 
