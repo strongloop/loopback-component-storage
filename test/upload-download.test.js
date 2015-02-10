@@ -15,7 +15,10 @@ var dsImage = loopback.createDataSource({
 
   getFilename: function(fileInfo) {
     return 'image-' + fileInfo.name;
-  }
+  },
+  acl: 'public-read',
+  allowedContentTypes: ['image/png', 'image/jpeg'],
+  maxFileSize: 5 * 1024 * 1024
 });
 
 var ImageContainer = dsImage.createModel('imageContainer');
@@ -175,8 +178,36 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "image-test.jpg", "type": "image/jpeg"}
+          {"container": "album1", "name": "image-test.jpg", "type": "image/jpeg", "acl":"public-read"}
         ]}, "fields": {}}});
+        done();
+      });
+  });
+
+  it('uploads file wrong content type', function (done) {
+
+    request('http://localhost:3000')
+      .post('/imageContainers/album1/upload')
+      .attach('image', path.join(__dirname, '../example/app.js'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert(err);
+        assert(res.body.error.message.indexOf('is not allowed') !== -1);
+        done();
+      });
+  });
+
+  it('uploads file too large', function (done) {
+
+    request('http://localhost:3000')
+      .post('/imageContainers/album1/upload')
+      .attach('image', path.join(__dirname, '../example/largeImage.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert(err);
+        assert(res.body.error.message.indexOf('maxFileSize exceeded') !== -1);
         done();
       });
   });
