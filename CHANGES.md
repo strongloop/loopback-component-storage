@@ -1,3 +1,9 @@
+2015-02-10, Version 1.3.0
+=========================
+
+ * Adding support for ACL, Content-Type, Max File Size and allowd Content-Types (Benjamin Boudreau)
+
+
 2015-01-30, Version 1.2.0
 =========================
 
