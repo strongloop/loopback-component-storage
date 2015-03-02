@@ -1,3 +1,13 @@
+2015-03-02, Version 1.3.1
+=========================
+
+ * Adding error handler on upload stream (Benjamin Boudreau)
+
+ * removed callback from downloadStream method (Jury D'Ambros)
+
+ * is not necessary to pass cb to pkgcloud (Jury D'Ambros)
+
+
 2015-02-10, Version 1.3.0
 =========================
 
