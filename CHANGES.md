@@ -1,3 +1,13 @@
+2015-04-21, Version 1.4.0
+=========================
+
+ * Fix the tests (Raymond Feng)
+
+ * this.options is undefined, should use options (Yazhong Liu)
+
+ * Expose file size on success callback (Leandro)
+
+
 2015-03-02, Version 1.3.1
 =========================
 
