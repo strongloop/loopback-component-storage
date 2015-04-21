@@ -163,7 +163,8 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "test.jpg", "type": "image/jpeg"}
+          {"container": "album1", "name": "test.jpg", "type": "image/jpeg", 
+           "size": 60475}
         ]}, "fields": {}}});
         done();
       });
@@ -178,7 +179,7 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "image-test.jpg", "type": "image/jpeg", "acl":"public-read"}
+          {"container": "album1", "name": "image-test.jpg", "type": "image/jpeg", "acl":"public-read", "size": 60475}
         ]}, "fields": {}}});
         done();
       });
