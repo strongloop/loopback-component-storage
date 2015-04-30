@@ -12,4 +12,4 @@ storage services including:
 - Openstack
 - Azure
 
-> Please see the [Storage Service Documenation](http://docs.strongloop.com/display/LB/Storage+service).
+> Please see the [Storage Service Documenation](http://docs.strongloop.com/display/public/LB/Storage+component).
