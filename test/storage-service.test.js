@@ -79,6 +79,13 @@ describe('Storage service', function () {
       writer.on('finish', done);
       writer.on('error', done);
     });
+    
+    it('should emit success event', function (done) {
+      var writer = storageService.uploadStream('c1', 'f1.txt');
+      fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(writer);
+      writer.on('success', done);
+      writer.on('error', done);
+    });
 
     it('should download a file', function (done) {
       var reader = storageService.downloadStream('c1', 'f1.txt');
