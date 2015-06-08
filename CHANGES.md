@@ -1,3 +1,15 @@
+2015-06-08, Version 1.5.0
+=========================
+
+ * Add var (Raymond Feng)
+
+ * Fix for issues - #58, #23 & #67 (ningsuhen)
+
+ * use middleware.json (Hage Yaapa)
+
+ * Fix documentation link (Samuel Mehrbrodt)
+
+
 2015-04-21, Version 1.4.0
 =========================
 
