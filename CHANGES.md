@@ -1,3 +1,11 @@
+2015-07-31, Version 1.5.1
+=========================
+
+ * Capture writer error (Raymond Feng)
+
+ * Bugfix: Cannot read property 'forEach' of undefined (Oleksii Strutsynskyi)
+
+
 2015-06-08, Version 1.5.0
 =========================
 
