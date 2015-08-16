@@ -1,78 +1,75 @@
 angular.module('app', ['angularFileUpload'])
 
   // The example of the full functionality
-  .controller('TestController',function ($scope, $fileUploader) {
+  .controller('TestController',function ($scope, FileUploader) {
     'use strict';
 
     // create a uploader with options
-    var uploader = $scope.uploader = $fileUploader.create({
+
+    var uploader = $scope.uploader = new FileUploader({
       scope: $scope,                          // to automatically update the html. Default: $rootScope
       url: '/api/containers/container1/upload',
       formData: [
         { key: 'value' }
-      ],
-      filters: [
-        function (item) {                    // first user filter
-          console.info('filter1');
-          return true;
-        }
       ]
     });
 
     // ADDING FILTERS
-
-    uploader.filters.push(function (item) { // second user filter
-      console.info('filter2');
-      return true;
+    uploader.filters.push({
+        name: 'filterName',
+        fn: function (item, options) { // second user filter
+            console.info('filter2');
+            return true;
+        }
     });
 
     // REGISTER HANDLERS
-
-    uploader.bind('afteraddingfile', function (event, item) {
+    // --------------------
+    uploader.onAfterAddingFile = function(item) {
       console.info('After adding a file', item);
-    });
-
-    uploader.bind('whenaddingfilefailed', function (event, item) {
-      console.info('When adding a file failed', item);
-    });
-
-    uploader.bind('afteraddingall', function (event, items) {
+    };
+    // --------------------
+    uploader.onAfterAddingAll = function(items) {
       console.info('After adding all files', items);
-    });
-
-    uploader.bind('beforeupload', function (event, item) {
+    };
+    // --------------------
+    uploader.onWhenAddingFileFailed = function(item, filter, options) {
+      console.info('When adding a file failed', item);
+    };
+    // --------------------
+    uploader.onBeforeUploadItem = function(item) {
       console.info('Before upload', item);
-    });
-
-    uploader.bind('progress', function (event, item, progress) {
+    };
+    // --------------------
+    uploader.onProgressItem = function(item, progress) {
       console.info('Progress: ' + progress, item);
-    });
-
-    uploader.bind('success', function (event, xhr, item, response) {
-      console.info('Success', xhr, item, response);
-      $scope.$broadcast('uploadCompleted', item);
-    });
-
-    uploader.bind('cancel', function (event, xhr, item) {
-      console.info('Cancel', xhr, item);
-    });
-
-    uploader.bind('error', function (event, xhr, item, response) {
-      console.info('Error', xhr, item, response);
-    });
-
-    uploader.bind('complete', function (event, xhr, item, response) {
-      console.info('Complete', xhr, item, response);
-    });
-
-    uploader.bind('progressall', function (event, progress) {
+    };
+    // --------------------
+    uploader.onProgressAll = function(progress) {
       console.info('Total progress: ' + progress);
-    });
-
-    uploader.bind('completeall', function (event, items) {
-      console.info('Complete all', items);
-    });
-
+    };
+    // --------------------
+    uploader.onSuccessItem = function(item, response, status, headers) {
+      console.info('Success', response, status, headers);
+      $scope.$broadcast('uploadCompleted', item);
+    };
+    // --------------------
+    uploader.onErrorItem = function(item, response, status, headers) {
+      console.info('Error', response, status, headers);
+    };
+    // --------------------
+    uploader.onCancelItem = function(item, response, status, headers) {
+      console.info('Cancel', response, status);
+    };
+    // --------------------
+    uploader.onCompleteItem = function(item, response, status, headers) {
+      console.info('Complete', response, status, headers);
+    };
+    // --------------------
+    uploader.onCompleteAll = function() {
+      console.info('Complete all');
+    };
+    // --------------------
   }
 ).controller('FilesController', function ($scope, $http) {
 

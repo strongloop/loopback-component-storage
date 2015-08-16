@@ -12,8 +12,8 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
     <!--<script src="../bower_components/angular/angular.js"></script>-->
-    <script src="http://code.angularjs.org/1.2.9/angular.min.js"></script>
-    <script src="angular-file-upload.js"></script>
+    <script src="http://code.angularjs.org/1.4.4/angular.min.js"></script>
+    <script src="angular-file-upload.min.js"></script>
     <script src="controllers.js"></script>
 
     <style>
@@ -21,7 +21,7 @@
             border: dotted 3px lightgray;
         }
 
-        .ng-file-over {
+        .nv-file-over {
             border: dotted 3px red;
         }
 
@@ -37,8 +37,8 @@
 
 </head>
 
-<!-- 1. ng-file-drop | ng-file-drop="options" -->
-<body ng-controller="TestController" ng-file-drop>
+<!-- 1. nv-file-drop | nv-file-drop="options" -->
+<body ng-controller="TestController" nv-file-drop uploader="uploader">
 
 <div class="container">
 
@@ -50,31 +50,34 @@
         </div>
     </div>
 
-    <div class="row">
+
+<div class="row">
 
         <div class="col-md-3">
+
+        <img ng-src="{{image}}"> </img>
 
             <h3>Select files</h3>
 
             <div ng-show="uploader.isHTML5">
-                <!-- 3. ng-file-over | ng-file-over="className" -->
-                <div class="well my-drop-zone" ng-file-over>
+                <!-- 3. nv-file-over | nv-file-over="className" -->
+                <div class="well my-drop-zone" nv-file-over uploader="uploader">
                     Base drop zone
                 </div>
 
-                <!-- Example: ng-file-drop | ng-file-drop="options" -->
-                <div class="well my-drop-zone" ng-file-drop="{ url: '/foo' }"
-                     ng-file-over="another-file-over-class">
+                <!-- Example: nv-file-drop | nv-file-drop="options" -->
+                <div class="well my-drop-zone" nv-file-drop="{ url: '/foo' } "
+                     nv-file-over="another-file-over-class" uploader="uploader">
                     Another drop zone with its own settings
                 </div>
             </div>
 
-            <!-- 2. ng-file-select | ng-file-select="options" -->
+            <!-- 2. nv-file-select | nv-file-select="options" -->
             Multiple
-            <input ng-file-select type="file" multiple/><br/>
+            <input nv-file-select uploader="uploader" type="file" multiple/><br/>
 
             Single
-            <input ng-file-select type="file"/>
+            <input nv-file-select uploader="uploader" type="file"/>
         </div>
 
         <div class="col-md-9" style="margin-bottom: 40px">
@@ -195,6 +198,9 @@
         </div>
 
     </div>
+
+
+</div>
 
 </div>
 
