@@ -22,10 +22,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-component-storage.git"
   },
-  "license": {
-    "name": "Dual Artistic-2.0/StrongLoop",
-    "url": "https://github.com/strongloop/loopback-strorage-service/blob/master/LICENSE"
-  },
+  "license": "Artistic-2.0",
   "optionalDependencies": {
     "sl-blip": "http://blip.strongloop.com/loopback-component-storage@1.5.1"
   }
