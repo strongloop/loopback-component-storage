@@ -30,7 +30,7 @@ var ds = loopback.createDataSource({
   root: path.join(__dirname, 'images')
 });
 
-var Container = ds.createModel('container');
+var Container = ds.createModel('container', {}, {base: 'Model'});
 app.model(Container);
 
 /*!
