@@ -1,3 +1,21 @@
+2015-11-24, Version 1.6.0
+=========================
+
+ * Add range support (Raymond Feng)
+
+ * Refer to licenses with a link (Sam Roberts)
+
+ * Upgrade LB Explorer and related changes (crandmck)
+
+ * Fix the test case (Raymond Feng)
+
+ * Use strongloop conventions for licensing (Sam Roberts)
+
+ * Fix link to docs (Rand McKinney)
+
+ * Bump client dependencies (upq)
+
+
 2015-07-31, Version 1.5.1
 =========================
 
