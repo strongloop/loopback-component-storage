@@ -1,4 +1,12 @@
-2015-11-24, Version 1.6.0
+2015-12-18, Version 1.6.1
+=========================
+
+ * Remove test file (Raymond Feng)
+
+ * Replace image (Raymond Feng)
+
+
+2015-11-23, Version 1.6.0
 =========================
 
  * Add range support (Raymond Feng)
