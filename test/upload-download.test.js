@@ -179,7 +179,7 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "image-test.jpg", "type": "image/jpeg", "acl":"public-read", "size": 60475}
+          {"container": "album1", "name": "image-test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "acl":"public-read", "size": 60475}
         ]}, "fields": {}}});
         done();
       });
