@@ -13,3 +13,7 @@ storage services including:
 - Azure
 
 > Please see the [Storage Service Documenation](http://docs.strongloop.com/display/public/LB/Storage+component).
+
+## Examples
+
+See https://github.com/strongloop/loopback-example-storage.

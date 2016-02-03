@@ -1,9 +1,0 @@
-{
-  "name": "container",
-  "base": "Model",
-  "properties": {},
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": []
-}

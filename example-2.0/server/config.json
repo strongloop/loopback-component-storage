@@ -1,7 +1,0 @@
-{
-  "legacyExplorer": false,
-  "restApiRoot": "/api",
-  "host": "0.0.0.0",
-  "port": 3000,
-  "url": "http://localhost:3000/"
-}
