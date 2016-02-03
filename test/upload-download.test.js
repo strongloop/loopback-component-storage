@@ -158,7 +158,7 @@ describe('storage service', function () {
 
     request('http://localhost:3000')
       .post('/containers/album1/upload')
-      .attach('image', path.join(__dirname, '../example/test.jpg'))
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
@@ -174,7 +174,7 @@ describe('storage service', function () {
 
     request('http://localhost:3000')
       .post('/imageContainers/album1/upload')
-      .attach('image', path.join(__dirname, '../example/test.jpg'))
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
@@ -189,7 +189,7 @@ describe('storage service', function () {
 
     request('http://localhost:3000')
       .post('/imageContainers/album1/upload')
-      .attach('image', path.join(__dirname, '../example/app.js'))
+      .attach('image', path.join(__dirname, './fixtures/app.js'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
@@ -203,7 +203,7 @@ describe('storage service', function () {
 
     request('http://localhost:3000')
       .post('/imageContainers/album1/upload')
-      .attach('image', path.join(__dirname, '../example/largeImage.jpg'))
+      .attach('image', path.join(__dirname, './fixtures/largeImage.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
