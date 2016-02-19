@@ -1,4 +1,18 @@
-2015-11-24, Version 1.6.0
+2016-02-19, Version 1.7.0
+=========================
+
+ * Remove sl-blip from dependencies (Miroslav Bajtoš)
+
+ * Migrate examples (Simon Ho)
+
+ * Expose `originalFilename` property (Santiago Osorio)
+
+ * Remove test file (Raymond Feng)
+
+ * Replace image (Raymond Feng)
+
+
+2015-11-23, Version 1.6.0
 =========================
 
  * Add range support (Raymond Feng)
