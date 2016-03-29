@@ -1,3 +1,9 @@
+2016-03-29, Version 1.7.1
+=========================
+
+ * Update storage-service.js (Rand McKinney)
+
+
 2016-02-19, Version 1.7.0
 =========================
 
