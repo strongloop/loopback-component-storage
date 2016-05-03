@@ -1,3 +1,13 @@
+2016-05-03, Version 1.8.1
+=========================
+
+ * update/insert copyright notices (Ryan Graham)
+
+ * relicese as Artistic-2.0 only (Ryan Graham)
+
+ * Update storage-service.js (Rand McKinney)
+
+
 2016-03-29, Version 1.8.0
 =========================
 
