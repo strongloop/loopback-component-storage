@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2013,2014. All Rights Reserved.
+// Node module: loopback-component-storage
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 var FileSystemProvider = require('../lib/providers/filesystem/index.js').Client;
 
 var assert = require('assert');
