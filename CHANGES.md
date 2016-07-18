@@ -1,3 +1,11 @@
+2016-07-18, Version 1.9.0
+=========================
+
+ * Update URLs in CONTRIBUTING.md (#138) (Ryan Graham)
+
+ * Fix for issue #127 (Gary Torres)
+
+
 2016-05-03, Version 1.8.1
 =========================
 
