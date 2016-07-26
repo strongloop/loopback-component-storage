@@ -15,3 +15,7 @@ npm-debug.log
 .idea
 node_modules
 providers-private.json
+
+!intl/
+intl/*
+!intl/en/
