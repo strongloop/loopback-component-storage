@@ -210,6 +210,7 @@ describe('storage service', function () {
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/largeImage.jpg'))
       .set('Accept', 'application/json')
+      .set('Connection', 'keep-alive')
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert(err);
