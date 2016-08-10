@@ -69,7 +69,7 @@ function verifyMetadata(containerOrFile, name) {
 describe('storage service', function () {
   var server = null;
   before(function (done) {
-    server = app.listen(3000, function () {
+    server = app.listen(0, function () {
       done();
     });
   });
@@ -80,7 +80,7 @@ describe('storage service', function () {
 
   it('should create a container', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .post('/containers')
       .send({name: 'test-container'})
       .set('Accept', 'application/json')
@@ -94,7 +94,7 @@ describe('storage service', function () {
 
   it('should get a container', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers/test-container')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -106,7 +106,7 @@ describe('storage service', function () {
 
   it('should list containers', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -122,7 +122,7 @@ describe('storage service', function () {
 
   it('should delete a container', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .del('/containers/test-container')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -133,7 +133,7 @@ describe('storage service', function () {
 
   it('should list containers after delete', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -146,7 +146,7 @@ describe('storage service', function () {
 
   it('should list files', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers/album1/files')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -161,7 +161,7 @@ describe('storage service', function () {
 
   it('uploads files', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .post('/containers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
@@ -177,7 +177,7 @@ describe('storage service', function () {
 
   it('uploads files with renamer', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
@@ -192,7 +192,7 @@ describe('storage service', function () {
 
   it('uploads file wrong content type', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/app.js'))
       .set('Accept', 'application/json')
@@ -206,7 +206,7 @@ describe('storage service', function () {
 
   it('uploads file too large', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/largeImage.jpg'))
       .set('Accept', 'application/json')
@@ -221,7 +221,7 @@ describe('storage service', function () {
 
   it('should get file by name', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers/album1/files/test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -233,7 +233,7 @@ describe('storage service', function () {
 
   it('should get file by renamed file name', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/imageContainers/album1/files/image-test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -245,7 +245,7 @@ describe('storage service', function () {
 
   it('downloads files', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
       .expect(200, function (err, res) {
@@ -255,7 +255,7 @@ describe('storage service', function () {
 
   it('should delete a file', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .del('/containers/album1/files/test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -266,7 +266,7 @@ describe('storage service', function () {
 
   it('reports errors if it fails to find the file to download', function (done) {
 
-    request('http://localhost:3000')
+    request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test_not_exist.jpg')
       .expect('Content-Type', /json/)
       .expect(500, function (err, res) {
