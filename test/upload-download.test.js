@@ -253,6 +253,25 @@ describe('storage service', function () {
       });
   });
 
+  it('should run a function before a download is started by a client', function(done) {
+    var hookCalled = false;
+
+    var Container = app.models.Container;
+
+    Container.beforeRemote('download', function(ctx, unused, cb) {
+      hookCalled = true;
+      cb();
+    });
+
+    request('http://localhost:' + app.get('port'))
+      .get('/containers/album1/download/test.jpg')
+      .expect('Content-Type', 'image/jpeg')
+      .expect(200, function(err, res) {
+        assert(hookCalled, 'beforeRemote hook was not called');
+        done();
+      });
+  });
+
   it('should delete a file', function (done) {
 
     request('http://localhost:' + app.get('port'))
