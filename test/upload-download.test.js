@@ -249,6 +249,47 @@ describe('storage service', function () {
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
       .expect(200, function (err, res) {
+        if (err) done(err);
+        done();
+      });
+  });
+
+  it('should run a function before a download is started by a client', function(done) {
+    var hookCalled = false;
+
+    var Container = app.models.Container;
+
+    Container.beforeRemote('download', function(ctx, unused, cb) {
+      hookCalled = true;
+      cb();
+    });
+
+    request('http://localhost:' + app.get('port'))
+      .get('/containers/album1/download/test.jpg')
+      .expect('Content-Type', 'image/jpeg')
+      .expect(200, function(err, res) {
+        if (err) done(err);
+        assert(hookCalled, 'beforeRemote hook was not called');
+        done();
+      });
+  });
+
+  it('should run a function after a download is started by a client', function(done) {
+    var hookCalled = false;
+
+    var Container = app.models.Container;
+
+    Container.afterRemote('download', function(ctx, unused, cb) {
+      hookCalled = true;
+      cb();
+    });
+
+    request('http://localhost:' + app.get('port'))
+      .get('/containers/album1/download/test.jpg')
+      .expect('Content-Type', 'image/jpeg')
+      .expect(200, function(err, res) {
+        if (err) done(err);
+        assert(hookCalled, 'afterRemote hook was not called');
         done();
       });
   });
