@@ -1,3 +1,19 @@
+2016-08-29, Version 1.9.1
+=========================
+
+ * Add provider upload response in final response (Loic VELUT)
+
+ * Continue middleware chain after download. (Richard Pringle)
+
+ * Add test for beforeRemote hook on download. (Richard Pringle)
+
+ * Use ephemeral port in upload/download test. (Richard Pringle)
+
+ * Add globalization to module. (Richard Pringle)
+
+ * Fix windows upload test double callback issue (David Cheung)
+
+
 2016-07-18, Version 1.9.0
 =========================
 
