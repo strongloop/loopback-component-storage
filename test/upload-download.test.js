@@ -10,6 +10,25 @@ var assert = require('assert');
 var app = loopback();
 var path = require('path');
 
+//custom route with renamer
+app.post('/custom/upload', function(req, res, next) {
+  var options = {
+      container : 'album1',
+      getFilename : function(file, req, res) {
+        return file.field + "_" +file.name;
+      }
+  };
+  ds.connector.upload(req, res, options, function(err,result){
+    if (!err){
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).send({ result : result });
+    }else{
+      res.status(500).send(err);
+    }
+  });
+
+});
+
 // expose a rest api
 app.use(loopback.rest());
 
@@ -168,8 +187,7 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "test.jpg", "type": "image/jpeg", 
-           "size": 60475}
+          {"container": "album1", "name": "test.jpg", "type": "image/jpeg","field":"image","size": 60475}
         ]}, "fields": {}}});
         done();
       });
@@ -184,7 +202,7 @@ describe('storage service', function () {
       .expect('Content-Type', /json/)
       .expect(200, function (err, res) {
         assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "image-test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "acl":"public-read", "size": 60475}
+          {"container": "album1", "name": "image-test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "field":"image", "acl":"public-read", "size": 60475}
         ]}, "fields": {}}});
         done();
       });
@@ -315,4 +333,20 @@ describe('storage service', function () {
         done();
       });
   });
+
+  it('should upload a file with custom route accessing directly to the storage connector with renamer',function (done){
+
+    request('http://localhost:' + app.get('port'))
+      .post('/custom/upload')
+      .attach('customimagefield', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function (err, res) {
+        assert.deepEqual(res.body, {"result": {"files": {"customimagefield": [
+          {"container": "album1", "name": "customimagefield_test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "field":"customimagefield", "size": 60475}
+        ]}, "fields": {}}});
+        done();
+      });
+  });
+
 });
