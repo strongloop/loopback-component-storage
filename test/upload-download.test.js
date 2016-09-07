@@ -33,7 +33,6 @@ app.post('/custom/upload', function(req, res, next) {
   });
 
 });
->>>>>>> efe4e08... added file field name into getFilename function
 
 // expose a rest api
 app.use(loopback.rest());
