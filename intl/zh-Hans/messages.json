@@ -1,0 +1,11 @@
+{
+  "2eb418c4dc7f7a3e989bb71a8f5388d7": "{{FileSystemProvider}}：路径不存在：{0}",
+  "6af59b6408b92f4c6b13a2c9b06379f2": "{{FileSystemProvider}}：无效名称：{0}",
+  "95065f7f9499f75f49e3714aa4e2031d": "{{FileSystemProvider}}：无效名称",
+  "c9fb0aba850059a14f4ed5e045e4ec3e": "无效名称：{0}",
+  "f589fe721f4e6fa112d1f66081ed29ac": "{{FileSystemProvider}}：无效目录：{0}",
+  "45c1c136e750c62179d75a1c99151281": "已超过 {{maxFileSize}}，收到 {0} 字节字段数据（最大为 {1}）",
+  "78f6f36e8300e15cff778496fb1dd178": "不允许 {{contentType}}“{0}”（必须在 [{1}] 中）",
+  "b8a9e184534171cf66caf58d29ad76f5": "已超过 {{maxFieldsSize}}，收到 {0} 字节字段数据"
+}
+
