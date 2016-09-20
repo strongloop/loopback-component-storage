@@ -310,7 +310,7 @@ describe('storage service', function () {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test_not_exist.jpg')
       .expect('Content-Type', /json/)
-      .expect(500, function (err, res) {
+      .expect(404, function (err, res) {
         assert(res.body.error);
         done();
       });
