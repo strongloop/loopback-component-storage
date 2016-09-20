@@ -14,6 +14,8 @@ storage services including:
 
 > Please see the [Storage Service Documenation](http://docs.strongloop.com/display/public/LB/Storage+component).
 
+For more details on the architecture of the module, please see the introduction section of the [blog post](https://strongloop.com/strongblog/managing-nodejs-loopback-storage-service-provider/) written up its launch. 
+
 ## Examples
 
 See https://github.com/strongloop/loopback-example-storage.
