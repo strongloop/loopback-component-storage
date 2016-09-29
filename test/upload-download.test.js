@@ -190,17 +190,16 @@ describe('storage service', function () {
       });
   });
 
-  it('uploads file wrong content type', function (done) {
-
+  it('uploads file wrong content type', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/app.js'))
       .set('Accept', 'application/json')
+      .set('Connection', 'keep-alive')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
-        assert(err);
+      .expect(500, function(err, res) {
         assert(res.body.error.message.indexOf('is not allowed') !== -1);
-        done();
+        done(err);
       });
   });
 
