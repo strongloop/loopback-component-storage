@@ -1,3 +1,15 @@
+2016-10-07, Version 1.9.2
+=========================
+
+ * Update japanese translation files (Candy)
+
+ * Add keep-alive setting to wrong content type test. (Richard Pringle)
+
+ * Add translated files (gunjpan)
+
+ * Add link to associated blog post. (Richard Pringle)
+
+
 2016-08-29, Version 1.9.1
 =========================
 
