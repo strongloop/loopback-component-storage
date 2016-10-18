@@ -2,9 +2,10 @@
 // Node module: loopback-component-storage
 // This file is licensed under the Artistic License 2.0.
 // License text available at https://opensource.org/licenses/Artistic-2.0
+'use strict';
 
-var loopback = require('loopback'),
-  app = module.exports = loopback();
+var loopback = require('loopback');
+var app = module.exports = loopback();
 
 var path = require('path');
 

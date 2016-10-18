@@ -2,13 +2,17 @@
 // Node module: loopback-component-storage
 // This file is licensed under the Artistic License 2.0.
 // License text available at https://opensource.org/licenses/Artistic-2.0
+'use strict';
 
 var StorageService = require('../lib/storage-service.js');
 
 var assert = require('assert');
 var path = require('path');
 
-var storageService = new StorageService({root: path.join(__dirname, 'storage'), provider: 'filesystem'});
+var storageService = new StorageService({
+  root: path.join(__dirname, 'storage'),
+  provider: 'filesystem',
+});
 
 describe('Storage service', function() {
   describe('container apis', function() {
