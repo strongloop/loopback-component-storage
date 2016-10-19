@@ -2,6 +2,7 @@
 // Node module: loopback-component-storage
 // This file is licensed under the Artistic License 2.0.
 // License text available at https://opensource.org/licenses/Artistic-2.0
+'use strict';
 
 var request = require('supertest');
 var loopback = require('loopback');
@@ -23,7 +24,7 @@ var dsImage = loopback.createDataSource({
   },
   acl: 'public-read',
   allowedContentTypes: ['image/png', 'image/jpeg'],
-  maxFileSize: 5 * 1024 * 1024
+  maxFileSize: 5 * 1024 * 1024,
 });
 
 var ImageContainer = dsImage.createModel('imageContainer');
@@ -32,7 +33,7 @@ app.model(ImageContainer);
 var ds = loopback.createDataSource({
   connector: require('../lib/storage-connector'),
   provider: 'filesystem',
-  root: path.join(__dirname, 'images')
+  root: path.join(__dirname, 'images'),
 });
 
 var Container = ds.createModel('container', {}, {base: 'Model'});
@@ -66,51 +67,48 @@ function verifyMetadata(containerOrFile, name) {
   assert.equal(typeof containerOrFile.size, 'number');
 }
 
-describe('storage service', function () {
+describe('storage service', function() {
   var server = null;
-  before(function (done) {
-    server = app.listen(0, function () {
+  before(function(done) {
+    server = app.listen(0, function() {
       done();
     });
   });
 
-  after(function () {
+  after(function() {
     server.close();
   });
 
-  it('should create a container', function (done) {
-
+  it('should create a container', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/containers')
       .send({name: 'test-container'})
       .set('Accept', 'application/json')
       .set('Content-Type', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         verifyMetadata(res.body, 'test-container');
         done();
       });
   });
 
-  it('should get a container', function (done) {
-
+  it('should get a container', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers/test-container')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         verifyMetadata(res.body, 'test-container');
         done();
       });
   });
 
-  it('should list containers', function (done) {
-
+  it('should list containers', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 2);
         res.body.forEach(function(c) {
@@ -120,37 +118,34 @@ describe('storage service', function () {
       });
   });
 
-  it('should delete a container', function (done) {
-
+  it('should delete a container', function(done) {
     request('http://localhost:' + app.get('port'))
       .del('/containers/test-container')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         done();
       });
   });
 
-  it('should list containers after delete', function (done) {
-
+  it('should list containers after delete', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 1);
         done();
       });
   });
 
-  it('should list files', function (done) {
-
+  it('should list files', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/files')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(Array.isArray(res.body));
         res.body.forEach(function(f) {
           verifyMetadata(f);
@@ -159,33 +154,31 @@ describe('storage service', function () {
       });
   });
 
-  it('uploads files', function (done) {
-
+  it('uploads files', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/containers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
-        assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "test.jpg", "type": "image/jpeg", 
-           "size": 60475}
-        ]}, "fields": {}}});
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'image': [
+          {'container': 'album1', 'name': 'test.jpg', 'type': 'image/jpeg',
+           'size': 60475},
+        ]}, 'fields': {}}});
         done();
       });
   });
 
-  it('uploads files with renamer', function (done) {
-
+  it('uploads files with renamer', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
-        assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "image-test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "acl":"public-read", "size": 60475}
-        ]}, "fields": {}}});
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'image': [
+          {'container': 'album1', 'name': 'image-test.jpg', 'originalFilename': 'test.jpg', 'type': 'image/jpeg', 'acl': 'public-read', 'size': 60475},
+        ]}, 'fields': {}}});
         done();
       });
   });
@@ -203,51 +196,47 @@ describe('storage service', function () {
       });
   });
 
-  it('uploads file too large', function (done) {
-
+  it('uploads file too large', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
       .attach('image', path.join(__dirname, './fixtures/largeImage.jpg'))
       .set('Accept', 'application/json')
       .set('Connection', 'keep-alive')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(err);
         assert(res.body.error.message.indexOf('maxFileSize exceeded') !== -1);
         done();
       });
   });
 
-  it('should get file by name', function (done) {
-
+  it('should get file by name', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/files/test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         verifyMetadata(res.body, 'test.jpg');
         done();
       });
   });
 
-  it('should get file by renamed file name', function (done) {
-
+  it('should get file by renamed file name', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/imageContainers/album1/files/image-test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         verifyMetadata(res.body, 'image-test.jpg');
         done();
       });
   });
 
-  it('downloads files', function (done) {
-
+  it('downloads files', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         if (err) done(err);
         done();
       });
@@ -293,23 +282,21 @@ describe('storage service', function () {
       });
   });
 
-  it('should delete a file', function (done) {
-
+  it('should delete a file', function(done) {
     request('http://localhost:' + app.get('port'))
       .del('/containers/album1/files/test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         done();
       });
   });
 
-  it('reports errors if it fails to find the file to download', function (done) {
-
+  it('reports errors if it fails to find the file to download', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test_not_exist.jpg')
       .expect('Content-Type', /json/)
-      .expect(500, function (err, res) {
+      .expect(500, function(err, res) {
         assert(res.body.error);
         done();
       });

@@ -4,7 +4,9 @@
   "version": "1.9.2",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js"
+    "lint": "eslint .",
+    "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js",
+    "posttest": "npm run lint"
   },
   "dependencies": {
     "async": "^0.9.0",
@@ -13,11 +15,13 @@
     "strong-globalize": "^2.6.2"
   },
   "devDependencies": {
+    "eslint": "^2.13.1",
+    "eslint-config-loopback": "^4.0.0",
     "express": "^4.11.0",
     "loopback": "^2.10.0",
+    "mkdirp": "^0.5.0",
     "mocha": "^2.1.0",
-    "supertest": "^0.15.0",
-    "mkdirp": "^0.5.0"
+    "supertest": "^0.15.0"
   },
   "repository": {
     "type": "git",
