@@ -11,6 +11,9 @@ var assert = require('assert');
 var app = loopback();
 var path = require('path');
 
+// configure errorHandler to show full error message
+app.set('remoting', {errorHandler: {debug: true, log: false}});
+
 // expose a rest api
 app.use(loopback.rest());
 
