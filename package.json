@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "./node_modules/.bin/mocha --timeout 30000 test/*test.js",
+    "test": "mocha --timeout 3000",
     "posttest": "npm run lint"
   },
   "dependencies": {
