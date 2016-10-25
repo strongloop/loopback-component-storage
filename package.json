@@ -18,7 +18,7 @@
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
     "express": "^4.11.0",
-    "loopback": "^2.10.0",
+    "loopback": "^3.0.0",
     "mkdirp": "^0.5.0",
     "mocha": "^2.1.0",
     "supertest": "^0.15.0"
