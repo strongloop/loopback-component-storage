@@ -7,6 +7,7 @@
 var request = require('supertest');
 var loopback = require('loopback');
 var assert = require('assert');
+var semver = require('semver');
 
 var app = loopback();
 var path = require('path');
@@ -211,6 +212,34 @@ describe('storage service', function() {
         assert(res.body.error.message.indexOf('maxFileSize exceeded') !== -1);
         done();
       });
+  });
+
+  it('returns error when no file is provided to upload', function(done) {
+    if (semver.gt(process.versions.node, '4.0.0')) {
+      request('http://localhost:' + app.get('port'))
+        .post('/imageContainers/album1/upload')
+        .set('Accept', 'application/json')
+        .set('Connection', 'keep-alive')
+        .expect('Content-Type', /json/)
+        .expect(400, function(err, res) {
+          var indexOfMsg =
+            res.body.error.message.toLowerCase().indexOf('no file');
+          assert.notEqual(indexOfMsg, -1,
+            'Error message does not contain \"no file\"');
+          done(err);
+        });
+    } else {
+      request('http://localhost:' + app.get('port'))
+        .post('/imageContainers/album1/upload')
+        .set('Accept', 'application/json')
+        .set('Connection', 'keep-alive')
+        .expect('Content-Type', /json/)
+        .expect(500, function(err, res) {
+          assert.equal(res.body.error.message,
+              'bad content-type header, no content-type');
+          done(err);
+        });
+    }
   });
 
   it('should get file by name', function(done) {
