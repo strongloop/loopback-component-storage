@@ -21,7 +21,8 @@
     "loopback": "^3.0.0",
     "mkdirp": "^0.5.0",
     "mocha": "^2.1.0",
-    "supertest": "^0.15.0"
+    "supertest": "^0.15.0",
+    "semver": "^5.3.0"
   },
   "repository": {
     "type": "git",
