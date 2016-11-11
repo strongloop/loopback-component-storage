@@ -314,6 +314,24 @@ describe('storage service', function() {
       });
   });
 
+  it('should run a function after a download failed', function(done) {
+    var hookCalled = false;
+    var Container = app.models.Container;
+
+    Container.afterRemoteError('download', function(ctx, cb) {
+      hookCalled = true;
+      cb();
+    });
+
+    request('http://localhost:' + app.get('port'))
+      .get('/containers/album1/download/does-not-exist')
+      .expect(404, function(err, res) {
+        if (err) return done(err);
+        assert(hookCalled, 'afterRemoteEror hook was not called');
+        done();
+      });
+  });
+
   it('should delete a file', function(done) {
     request('http://localhost:' + app.get('port'))
       .del('/containers/album1/files/test.jpg')
