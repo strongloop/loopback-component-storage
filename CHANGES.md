@@ -1,3 +1,27 @@
+2016-11-11, Version 1.10.0
+==========================
+
+ * Continue middleware chain after download error (Miroslav Bajtoš)
+
+ * Clean up "download()" implementation (Miroslav Bajtoš)
+
+ * Return error when no file is uploaded (Loay)
+
+ * Update README with correct doc links, etc (Amir Jafarian)
+
+ * Upgrade loopback to 3.0.0 (Loay)
+
+ * Fix `use strict` (Amir Jafarian)
+
+ * Simplify mocha test in package.json (Amir Jafarian)
+
+ * Fix linting errors (Amir Jafarian)
+
+ * Auto-update by eslint --fix (Amir Jafarian)
+
+ * Add eslint infrastructure (Amir Jafarian)
+
+
 2016-10-07, Version 1.9.2
 =========================
 
