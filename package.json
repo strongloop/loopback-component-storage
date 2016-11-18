@@ -2,6 +2,9 @@
   "name": "loopback-component-storage",
   "description": "Loopback Storage Service",
   "version": "1.10.0",
+  "publishConfig": {
+    "tag": "lts"
+  },  
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
