@@ -1,6 +1,9 @@
 {
   "name": "loopback-component-storage",
   "description": "Loopback Storage Service",
+  "engines": {
+    "node": ">=4"
+  },
   "version": "3.0.0-alpha.1",
   "main": "index.js",
   "scripts": {
