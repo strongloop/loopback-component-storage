@@ -2,6 +2,9 @@
   "name": "loopback-component-storage",
   "description": "Loopback Storage Service",
   "version": "1.10.0",
+  "publishConfig": {
+    "tag": "lts"
+  },
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
@@ -18,11 +21,11 @@
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
     "express": "^4.11.0",
-    "loopback": "^3.0.0",
+    "loopback": "^2.36.0",
     "mkdirp": "^0.5.0",
     "mocha": "^2.1.0",
-    "supertest": "^0.15.0",
-    "semver": "^5.3.0"
+    "semver": "^5.3.0",
+    "supertest": "^0.15.0"
   },
   "repository": {
     "type": "git",
