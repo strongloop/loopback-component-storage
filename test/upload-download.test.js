@@ -91,6 +91,7 @@ describe('storage service', function() {
       .set('Content-Type', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         verifyMetadata(res.body, 'test-container');
         done();
       });
@@ -102,6 +103,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         verifyMetadata(res.body, 'test-container');
         done();
       });
@@ -113,6 +115,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 2);
         res.body.forEach(function(c) {
@@ -128,7 +131,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        done();
+        done(err);
       });
   });
 
@@ -138,6 +141,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 1);
         done();
@@ -150,6 +154,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         assert(Array.isArray(res.body));
         res.body.forEach(function(f) {
           verifyMetadata(f);
@@ -165,6 +170,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         assert.deepEqual(res.body, {'result': {'files': {'image': [
           {'container': 'album1', 'name': 'test.jpg', 'type': 'image/jpeg',
            'size': 60475},
@@ -180,6 +186,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) done(err);
         assert.deepEqual(res.body, {'result': {'files': {'image': [
           {'container': 'album1', 'name': 'image-test.jpg', 'originalFilename': 'test.jpg', 'type': 'image/jpeg', 'acl': 'public-read', 'size': 60475},
         ]}, 'fields': {}}});
@@ -248,6 +255,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         verifyMetadata(res.body, 'test.jpg');
         done();
       });
@@ -259,6 +267,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         verifyMetadata(res.body, 'image-test.jpg');
         done();
       });
@@ -338,7 +347,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        done();
+        done(err);
       });
   });
 
@@ -347,6 +356,7 @@ describe('storage service', function() {
       .get('/containers/album1/download/test_not_exist.jpg')
       .expect('Content-Type', /json/)
       .expect(500, function(err, res) {
+        if (err) return done(err);
         assert(res.body.error);
         done();
       });
