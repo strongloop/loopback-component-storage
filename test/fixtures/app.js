@@ -14,8 +14,6 @@ app.use('/api', loopback.rest());
 
 app.use(loopback.static(path.join(__dirname, 'public')));
 
-app.set('port', process.env.PORT || 3000);
-
 var ds = loopback.createDataSource({
   connector: require('../index'),
   provider: 'filesystem',
@@ -26,5 +24,6 @@ var container = ds.createModel('container');
 
 app.model(container);
 
-app.listen(app.get('port'));
-console.log('http://127.0.0.1:' + app.get('port'));
+var listener = app.listen(0, function() {
+  console.log('Application listening at http://127.0.0.1:' + listener.address().port);
+});
