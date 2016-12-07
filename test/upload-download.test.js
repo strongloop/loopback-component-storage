@@ -91,6 +91,7 @@ describe('storage service', function() {
       .set('Content-Type', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         verifyMetadata(res.body, 'test-container');
         done();
       });
@@ -102,6 +103,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         verifyMetadata(res.body, 'test-container');
         done();
       });
@@ -113,6 +115,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 2);
         res.body.forEach(function(c) {
@@ -127,9 +130,7 @@ describe('storage service', function() {
       .del('/containers/test-container')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function(err, res) {
-        done();
-      });
+      .expect(200, done);
   });
 
   it('should list containers after delete', function(done) {
@@ -138,6 +139,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         assert(Array.isArray(res.body));
         assert.equal(res.body.length, 1);
         done();
@@ -150,6 +152,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         assert(Array.isArray(res.body));
         res.body.forEach(function(f) {
           verifyMetadata(f);
@@ -165,6 +168,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         assert.deepEqual(res.body, {'result': {'files': {'image': [
           {'container': 'album1', 'name': 'test.jpg', 'type': 'image/jpeg',
            'size': 60475},
@@ -180,6 +184,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         assert.deepEqual(res.body, {'result': {'files': {'image': [
           {'container': 'album1', 'name': 'image-test.jpg', 'originalFilename': 'test.jpg', 'type': 'image/jpeg', 'acl': 'public-read', 'size': 60475},
         ]}, 'fields': {}}});
@@ -248,6 +253,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         verifyMetadata(res.body, 'test.jpg');
         done();
       });
@@ -259,6 +265,7 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
+        if (err) return done(err);
         verifyMetadata(res.body, 'image-test.jpg');
         done();
       });
@@ -268,10 +275,7 @@ describe('storage service', function() {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
-      .expect(200, function(err, res) {
-        if (err) done(err);
-        done();
-      });
+      .expect(200, done);
   });
 
   it('should run a function before a download is started by a client', function(done) {
@@ -288,7 +292,7 @@ describe('storage service', function() {
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
       .expect(200, function(err, res) {
-        if (err) done(err);
+        if (err) return done(err);
         assert(hookCalled, 'beforeRemote hook was not called');
         done();
       });
@@ -308,7 +312,7 @@ describe('storage service', function() {
       .get('/containers/album1/download/test.jpg')
       .expect('Content-Type', 'image/jpeg')
       .expect(200, function(err, res) {
-        if (err) done(err);
+        if (err) return done(err);
         assert(hookCalled, 'afterRemote hook was not called');
         done();
       });
@@ -337,16 +341,15 @@ describe('storage service', function() {
       .del('/containers/album1/files/test.jpg')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function(err, res) {
-        done();
-      });
+      .expect(200, done);
   });
 
   it('reports errors if it fails to find the file to download', function(done) {
     request('http://localhost:' + app.get('port'))
       .get('/containers/album1/download/test_not_exist.jpg')
       .expect('Content-Type', /json/)
-      .expect(500, function(err, res) {
+      .expect(404, function(err, res) {
+        if (err) return done(err);
         assert(res.body.error);
         done();
       });
