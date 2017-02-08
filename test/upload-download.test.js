@@ -173,6 +173,42 @@ describe('storage service', function() {
       });
   });
 
+  it('fails to upload using dotdot file path', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('/containers/%2e%2e/upload')
+      .expect(200, function(err, res) {
+        assert(err);
+        done();
+      });
+  });
+
+  it('fails to upload using  dotdot file path', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('%2e%2e/containers/upload')
+      .expect(200, function(err, res) {
+        assert(err);
+        done();
+      });
+  });
+
+  it('fails to upload using dotdot file path', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('%2e%2e')
+      .expect(200, function(err, res) {
+        assert(err);
+        done();
+      });
+  });
+
+  it('fails to upload using dotdot file path', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('/containers/upload/%2e%2e')
+      .expect(200, function(err, res) {
+        assert(err);
+        done();
+      });
+  });
+
   it('uploads files with renamer', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/imageContainers/album1/upload')
