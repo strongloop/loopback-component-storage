@@ -1,3 +1,17 @@
+2017-02-10, Version 1.10.1
+==========================
+
+ * Fix path joining/expanding (Loay)
+
+ * Image not found should return 404 (David Cheung)
+
+ * make sure tests fail upon error (David Cheung)
+
+ * Revert dev-dependency on loopback to 2.x (Siddhi Pai)
+
+ * Set publish tag to "lts" (Siddhi Pai)
+
+
 2016-11-11, Version 1.10.0
 ==========================
 

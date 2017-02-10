@@ -1,7 +1,7 @@
 {
   "name": "loopback-component-storage",
   "description": "Loopback Storage Service",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "publishConfig": {
     "tag": "lts"
   },
