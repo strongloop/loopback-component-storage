@@ -1,3 +1,31 @@
+2017-03-01, Version 3.1.0
+=========================
+
+ * Fix eslint (Raymond Feng)
+
+ * Replicate new issue_template from loopback (Siddhi Pai)
+
+ * Fix insert of finalNewLine (Loay)
+
+ * Replicate issue_template from loopback repo (Siddhi Pai)
+
+ * fix lint (Raymond Camden)
+
+ * Support nameConflict and makeUnique options (Raymond Camden)
+
+ * Fix #185: Validation failures crash server (Jeff Burn)
+
+ * fix scope error (ole3021)
+
+ * added file field name into getFilename function (Jose De Gouveia)
+
+ * added file field name into getFilename function in storage-handler (Jose De Gouveia)
+
+ * Added support for external providers as npm modules. (Cristobal Vergara)
+
+ * added maxFieldsSize override to formidable limit (Oscar Bernal)
+
+
 2017-02-10, Version 3.0.1
 =========================
 
