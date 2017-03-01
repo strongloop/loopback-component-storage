@@ -110,6 +110,21 @@ describe('FileSystem based storage provider', function() {
       writer.on('error', done);
     });
 
+    it('should fail to upload a file with invalid characters', function(done) {
+      var writer = client.upload({container: 'c1', remote: 'a/f1.txt'});
+      fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(writer);
+      var cb = done;
+      var clearCb = function() {};
+      writer.on('error', function() {
+        cb();
+        cb = clearCb;
+      });
+      writer.on('finish', function() {
+        cb(new Error('Should have finished with error callback'));
+        cb = clearCb;
+      });
+    });
+
     it('should download a file', function(done) {
       var reader = client.download({
         container: 'c1',
@@ -118,6 +133,21 @@ describe('FileSystem based storage provider', function() {
       reader.pipe(fs.createWriteStream(path.join(__dirname, 'files/f1_downloaded.txt')));
       reader.on('end', done);
       reader.on('error', done);
+    });
+
+    it('should fail to download a file with invalid characters', function(done) {
+      var reader = client.download({container: 'c1', remote: 'a/f1.txt'});
+      reader.pipe(fs.createWriteStream(path.join(__dirname, 'files/a-f1_downloaded.txt')));
+      var cb = done;
+      var clearCb = function() {};
+      reader.on('error', function() {
+        cb();
+        cb = clearCb;
+      });
+      reader.on('end', function() {
+        cb(new Error('Expected error: Invalid name'));
+        cb = clearCb;
+      });
     });
 
     it('should get files for a container', function(done) {
@@ -161,4 +191,3 @@ describe('FileSystem based storage provider', function() {
     });
   });
 });
-
