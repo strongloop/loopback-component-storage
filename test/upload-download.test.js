@@ -14,7 +14,7 @@ var path = require('path');
 
 // configure errorHandler to show full error message
 app.set('remoting', {errorHandler: {debug: true, log: false}});
-//custom route with renamer
+// custom route with renamer
 app.post('/custom/upload', function(req, res, next) {
   var options = {
     container: 'album1',
