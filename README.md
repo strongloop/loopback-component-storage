@@ -32,6 +32,22 @@ Example
 [POST] http://example.com:3000/api/Containers/images%2Fprofile%2Fpersonal/upload (For upload file)
 ```
 
+## Add option to your dataSources.json
+If you want a default name only for the upload images (not files), you have to add `defaultImageName` to your Container options.
+**datasources.json**
+```
+[...]
+  "container": {
+    "name": "container",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "maxFileSize": "10485760",
+    "root": "./storage",
+    "defaultImageName": "photo"
+  }
+[...]
+  ```
+
 ## Examples
 
 See https://github.com/strongloop/loopback-example-storage.
