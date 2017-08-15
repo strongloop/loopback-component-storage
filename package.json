@@ -14,6 +14,7 @@
   "dependencies": {
     "async": "^2.1.5",
     "formidable": "^1.0.16",
+    "mkdirp": "^0.5.1",
     "pkgcloud": "^1.1.0",
     "strong-globalize": "^2.6.2",
     "uuid": "^3.0.1"
