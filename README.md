@@ -16,6 +16,22 @@ storage services including:
 
 For more details on the architecture of the module, please see the introduction section of the [blog post](https://strongloop.com/strongblog/managing-nodejs-loopback-storage-service-provider/) written up its launch. 
 
+## Use
+Now you can use Container's name with slash! If you want to create a directory, like `this/isMy/newContainer`, you have to use the char `%2F` instead of `/`, so your Container's name going to be `this%2FisMy%2FnewContainer`.
+
+## URL Example
+Syntax
+```
+[POST] <<YOUR_URL>>:<<YOUR_PORT>>/api/Containers/<<CONTAINER_NAME>>/
+[POST] <<YOUR_URL>>:<<YOUR_PORT>>/api/Containers/<<CONTAINER_NAME>>/upload (For upload file)
+```
+
+Example
+```
+[POST] http://example.com:3000/api/Containers/images%2Fprofile%2Fpersonal/
+[POST] http://example.com:3000/api/Containers/images%2Fprofile%2Fpersonal/upload (For upload file)
+```
+
 ## Examples
 
 See https://github.com/strongloop/loopback-example-storage.
