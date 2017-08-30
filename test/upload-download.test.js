@@ -32,6 +32,23 @@ app.post('/custom/upload', function(req, res, next) {
   });
 });
 
+// custom route with renamer
+app.post('/custom/uploadWithContainer', function(req, res, next) {
+  var options = {
+    getFilename: function(file, req, res) {
+      return file.field + '_' + file.name;
+    },
+  };
+  ds.connector.upload('album1', req, res, options, function(err, result) {
+    if (!err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).send({result: result});
+    } else {
+      res.status(500).send(err);
+    }
+  });
+});
+
 // expose a rest api
 app.use(loopback.rest());
 
@@ -416,6 +433,22 @@ describe('storage service', function() {
           {'container': 'album1', 'name': 'customimagefield_test.jpg',
             'originalFilename': 'test.jpg', 'type': 'image/jpeg',
             'field': 'customimagefield', 'size': 60475},
+        ]}, 'fields': {}}});
+        done();
+      });
+  });
+
+  it('should upload a file with container param', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('/custom/uploadWithContainer')
+      .attach('customimagefield1', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'customimagefield1': [
+          {'container': 'album1', 'name': 'customimagefield1_test.jpg',
+            'originalFilename': 'test.jpg', 'type': 'image/jpeg',
+            'field': 'customimagefield1', 'size': 60475},
         ]}, 'fields': {}}});
         done();
       });
