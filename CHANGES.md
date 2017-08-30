@@ -1,3 +1,9 @@
+2017-08-30, Version 3.3.1
+=========================
+
+ * Declare container parameter for swagger spec (Raymond Feng)
+
+
 2017-08-30, Version 3.3.0
 =========================
 
