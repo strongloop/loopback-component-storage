@@ -1,4 +1,4 @@
-Copyright (c) IBM Corp. 2013,2016. All Rights Reserved.
+Copyright (c) IBM Corp. 2013,2017. All Rights Reserved.
 Node module: loopback-component-storage
 This project is licensed under the Artistic License 2.0, full text below.
 
