@@ -1,3 +1,27 @@
+2017-08-30, Version 3.3.1
+=========================
+
+ * Declare container parameter for swagger spec (Raymond Feng)
+
+
+2017-08-30, Version 3.3.0
+=========================
+
+ * Mark HTTP path parameters as required (Miroslav Bajtoš)
+
+ * Add stalebot configuration (Kevin Delisle)
+
+ * Create Issue and PR Templates (#218) (Sakib Hasan)
+
+ * Update translated strings Q3 2017 (Allen Boone)
+
+ * Add CODEOWNER file (Diana Lau)
+
+ * update messages.json (Diana Lau)
+
+ * add .travis.yml (Diana Lau)
+
+
 2017-03-09, Version 3.2.0
 =========================
 
