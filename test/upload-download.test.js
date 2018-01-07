@@ -14,6 +14,40 @@ var path = require('path');
 
 // configure errorHandler to show full error message
 app.set('remoting', {errorHandler: {debug: true, log: false}});
+// custom route with renamer
+app.post('/custom/upload', function(req, res, next) {
+  var options = {
+    container: 'album1',
+    getFilename: function(file, req, res) {
+      return file.field + '_' + file.name;
+    },
+  };
+  ds.connector.upload(req, res, options, function(err, result) {
+    if (!err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).send({result: result});
+    } else {
+      res.status(500).send(err);
+    }
+  });
+});
+
+// custom route with renamer
+app.post('/custom/uploadWithContainer', function(req, res, next) {
+  var options = {
+    getFilename: function(file, req, res) {
+      return file.field + '_' + file.name;
+    },
+  };
+  ds.connector.upload('album1', req, res, options, function(err, result) {
+    if (!err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).send({result: result});
+    } else {
+      res.status(500).send(err);
+    }
+  });
+});
 
 // custom route with renamer
 app.post('/custom/upload', function(req, res, next) {
@@ -200,10 +234,28 @@ describe('storage service', function() {
       .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
-        assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "test.jpg", "type": "image/jpeg","field":"image","size": 60475}
-        ]}, "fields": {}}});
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'image': [
+          {'container': 'album1', 'name': 'test.jpg', 'type': 'image/jpeg', 'field': 'image', 'size': 60475},
+        ]}, 'fields': {}}});
+        done();
+      });
+  });
+
+  it('fails to upload using dotdot file path', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('/containers/%2e%2e/upload')
+      .expect(200, function(err, res) {
+        assert(err);
+        done();
+      });
+  });
+
+  it('fails to upload using  dotdot file path', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('%2e%2e/containers/upload')
+      .expect(200, function(err, res) {
+        assert(err);
         done();
       });
   });
@@ -232,10 +284,10 @@ describe('storage service', function() {
       .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
-        assert.deepEqual(res.body, {"result": {"files": {"image": [
-          {"container": "album1", "name": "image-test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "field":"image", "acl":"public-read", "size": 60475}
-        ]}, "fields": {}}});
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'image': [
+          {'container': 'album1', 'name': 'image-test.jpg', 'originalFilename': 'test.jpg', 'type': 'image/jpeg', 'field': 'image', 'acl': 'public-read', 'size': 60475},
+        ]}, 'fields': {}}});
         done();
       });
   });
@@ -405,17 +457,19 @@ describe('storage service', function() {
       });
   });
 
-  it('should upload a file with custom route accessing directly to the storage connector with renamer',function (done){
-
+  it('should upload a file with custom route accessing directly to the ' +
+    'storage connector with renamer', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/custom/upload')
       .attach('customimagefield', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, function (err, res) {
-        assert.deepEqual(res.body, {"result": {"files": {"customimagefield": [
-          {"container": "album1", "name": "customimagefield_test.jpg", "originalFilename":"test.jpg", "type": "image/jpeg", "field":"customimagefield", "size": 60475}
-        ]}, "fields": {}}});
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'customimagefield': [
+          {'container': 'album1', 'name': 'customimagefield_test.jpg',
+            'originalFilename': 'test.jpg', 'type': 'image/jpeg',
+            'field': 'customimagefield', 'size': 60475},
+        ]}, 'fields': {}}});
         done();
       });
   });
