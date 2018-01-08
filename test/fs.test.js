@@ -46,6 +46,21 @@ describe('FileSystem based storage provider', function() {
       });
     });
 
+    it('should create a new container with slash', function(done) {
+      client.createContainer({name: 'c1%2Fc2'}, function(err, container) {
+        assert(!err);
+        verifyMetadata(container, 'c1/c2');
+        done(err, container);
+      });
+    });
+
+    it('should destroy a container c1/c2', function(done) {
+      client.destroyContainer('c1/c2', function(err, container) {
+        assert(!err);
+        done(err, container);
+      });
+    });
+
     it('should create a new container', function(done) {
       client.createContainer({name: 'c1'}, function(err, container) {
         assert(!err);

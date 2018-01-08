@@ -49,6 +49,41 @@ app.post('/custom/uploadWithContainer', function(req, res, next) {
   });
 });
 
+// custom route with renamer
+app.post('/custom/upload', function(req, res, next) {
+  var options = {
+    container: 'album1',
+    getFilename: function(file, req, res) {
+      return file.field + '_' + file.name;
+    },
+  };
+  ds.connector.upload(req, res, options, function(err, result) {
+    if (!err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).send({result: result});
+    } else {
+      res.status(500).send(err);
+    }
+  });
+});
+
+// custom route with renamer
+app.post('/custom/uploadWithContainer', function(req, res, next) {
+  var options = {
+    getFilename: function(file, req, res) {
+      return file.field + '_' + file.name;
+    },
+  };
+  ds.connector.upload('album1', req, res, options, function(err, result) {
+    if (!err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).send({result: result});
+    } else {
+      res.status(500).send(err);
+    }
+  });
+});
+
 // expose a rest api
 app.use(loopback.rest());
 
