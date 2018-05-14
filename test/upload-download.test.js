@@ -11,6 +11,7 @@ var semver = require('semver');
 
 var app = loopback();
 var path = require('path');
+var fs = require('fs');
 
 // configure errorHandler to show full error message
 app.set('remoting', {errorHandler: {debug: true, log: false}});
@@ -77,6 +78,14 @@ var ds = loopback.createDataSource({
 var Container = ds.createModel('container', {}, {base: 'Model'});
 app.model(Container);
 
+var RenamingContainer = ds.createModel('rename', {}, {base: 'Model'});
+app.model(RenamingContainer);
+
+RenamingContainer.beforeRemote('upload', function(ctx, unused, cb) {
+  ctx.targetFileName = 'renamed-test.jpg';
+  cb();
+});
+
 /*!
  * Verify that the JSON response has the correct metadata properties.
  * Please note the metadata vary by storage providers. This test assumes
@@ -107,13 +116,22 @@ function verifyMetadata(containerOrFile, name) {
 
 describe('storage service', function() {
   var server = null;
-  before(function(done) {
+  beforeEach(function(done) {
     server = app.listen(0, function() {
       done();
     });
   });
 
-  after(function() {
+  afterEach(function() {
+    var temporaryImagesPath = path.join(__dirname, 'images', 'album1');
+    var files = fs.readdirSync(temporaryImagesPath);
+    files.forEach(function(fileName) {
+      var ext = fileName.substr(-4);
+      if (ext === '.jpg') {
+        var filePath = path.join(temporaryImagesPath, fileName);
+        fs.unlinkSync(filePath);
+      }
+    });
     server.close();
   });
 
@@ -206,6 +224,23 @@ describe('storage service', function() {
       });
   });
 
+  it('renames uploading file', function(done) {
+    request('http://localhost:' + app.get('port'))
+      .post('/renames/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function(err, res) {
+        assert.deepEqual(res.body, {'result': {'files': {'image': [
+          {'container': 'album1', 'name': 'renamed-test.jpg', 'type': 'image/jpeg', 'field': 'image', 'size': 60475},
+        ]}, 'fields': {}}});
+
+        request('http://localhost:' + app.get('port'))
+          .get('/renames/album1/download/renamed-test.jpg')
+          .expect(200, done);
+      });
+  });
+
   it('fails to upload using dotdot file path', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/containers/%2e%2e/upload')
@@ -215,7 +250,7 @@ describe('storage service', function() {
       });
   });
 
-  it('fails to upload using  dotdot file path', function(done) {
+  it('fails to upload using dotdot file path', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('%2e%2e/containers/upload')
       .expect(200, function(err, res) {
@@ -313,33 +348,54 @@ describe('storage service', function() {
 
   it('should get file by name', function(done) {
     request('http://localhost:' + app.get('port'))
-      .get('/containers/album1/files/test.jpg')
+      .post('/containers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        verifyMetadata(res.body, 'test.jpg');
-        done();
+        request('http://localhost:' + app.get('port'))
+          .get('/containers/album1/files/test.jpg')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(200, function(err, res) {
+            verifyMetadata(res.body, 'test.jpg');
+            done();
+          });
       });
   });
 
   it('should get file by renamed file name', function(done) {
     request('http://localhost:' + app.get('port'))
-      .get('/imageContainers/album1/files/image-test.jpg')
+      .post('/imageContainers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        verifyMetadata(res.body, 'image-test.jpg');
-        done();
+        request('http://localhost:' + app.get('port'))
+          .get('/imageContainers/album1/files/image-test.jpg')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(200, function(err, res) {
+            verifyMetadata(res.body, 'image-test.jpg');
+            done();
+          });
       });
   });
 
   it('downloads files', function(done) {
     request('http://localhost:' + app.get('port'))
-      .get('/containers/album1/download/test.jpg')
-      .expect('Content-Type', 'image/jpeg')
+      .post('/containers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        if (err) done(err);
-        done();
+        request('http://localhost:' + app.get('port'))
+          .get('/containers/album1/download/test.jpg')
+          .expect('Content-Type', 'image/jpeg')
+          .expect(200, function(err, res) {
+            if (err) return done(err);
+            done();
+          });
       });
   });
 
@@ -354,12 +410,19 @@ describe('storage service', function() {
     });
 
     request('http://localhost:' + app.get('port'))
-      .get('/containers/album1/download/test.jpg')
-      .expect('Content-Type', 'image/jpeg')
+      .post('/containers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        if (err) done(err);
-        assert(hookCalled, 'beforeRemote hook was not called');
-        done();
+        request('http://localhost:' + app.get('port'))
+          .get('/containers/album1/download/test.jpg')
+          .expect('Content-Type', 'image/jpeg')
+          .expect(200, function(err, res) {
+            if (err) return done(err);
+            assert(hookCalled, 'beforeRemote hook was not called');
+            done();
+          });
       });
   });
 
@@ -374,12 +437,19 @@ describe('storage service', function() {
     });
 
     request('http://localhost:' + app.get('port'))
-      .get('/containers/album1/download/test.jpg')
-      .expect('Content-Type', 'image/jpeg')
+      .post('/containers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        if (err) done(err);
-        assert(hookCalled, 'afterRemote hook was not called');
-        done();
+        request('http://localhost:' + app.get('port'))
+          .get('/containers/album1/download/test.jpg')
+          .expect('Content-Type', 'image/jpeg')
+          .expect(200, function(err, res) {
+            if (err) return done(err);
+            assert(hookCalled, 'afterRemote hook was not called');
+            done();
+          });
       });
   });
 
@@ -393,21 +463,35 @@ describe('storage service', function() {
     });
 
     request('http://localhost:' + app.get('port'))
-      .get('/containers/album1/download/does-not-exist')
-      .expect(404, function(err, res) {
-        if (err) return done(err);
-        assert(hookCalled, 'afterRemoteEror hook was not called');
-        done();
+      .post('/containers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200, function(err, res) {
+        request('http://localhost:' + app.get('port'))
+          .get('/containers/album1/download/does-not-exist')
+          .expect(404, function(err, res) {
+            if (err) return done(err);
+            assert(hookCalled, 'afterRemoteEror hook was not called');
+            done();
+          });
       });
   });
 
   it('should delete a file', function(done) {
     request('http://localhost:' + app.get('port'))
-      .del('/containers/album1/files/test.jpg')
+      .post('/containers/album1/upload')
+      .attach('image', path.join(__dirname, './fixtures/test.jpg'))
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        done();
+        request('http://localhost:' + app.get('port'))
+          .del('/containers/album1/files/test.jpg')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(200, function(err, res) {
+            done();
+          });
       });
   });
 
