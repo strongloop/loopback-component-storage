@@ -196,6 +196,15 @@ describe('FileSystem based storage provider', function() {
       });
     });
 
+    it('should not get a file from a container', function(done) {
+      client.getFile('c1', 'f2.txt', function(err, f) {
+        assert(err);
+        assert.equal('ENOENT', err.code);
+        assert(!f);
+        done();
+      });
+    });
+
     it('should destroy a container c1', function(done) {
       client.destroyContainer('c1', function(err, container) {
         // console.error(err);
