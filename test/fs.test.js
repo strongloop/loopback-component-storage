@@ -24,13 +24,17 @@ describe('FileSystem based storage provider', function() {
   describe('container apis', function() {
     var client = null;
     it('should require an existing directory as the root', function(done) {
-      client = new FileSystemProvider({root: path.join(__dirname, 'storage')});
+      client = new FileSystemProvider({
+        root: path.join(__dirname, 'storage'),
+      });
       process.nextTick(done);
     });
 
     it('should complain if the root directory doesn\'t exist', function(done) {
       try {
-        client = new FileSystemProvider({root: path.join(__dirname, '_storage')});
+        client = new FileSystemProvider({
+          root: path.join(__dirname, '_storage'),
+        });
         process.nextTick(done.bind(null, 'Error'));
       } catch (err) {
         // Should be here
@@ -94,7 +98,9 @@ describe('FileSystem based storage provider', function() {
 
   describe('file apis', function() {
     var fs = require('fs');
-    var client = new FileSystemProvider({root: path.join(__dirname, 'storage')});
+    var client = new FileSystemProvider({
+      root: path.join(__dirname, 'storage'),
+    });
 
     it('should create a new container', function(done) {
       client.createContainer({name: 'c1'}, function(err, container) {
@@ -110,6 +116,7 @@ describe('FileSystem based storage provider', function() {
       writer.on('error', done);
     });
 
+    /* eslint-disable mocha/handle-done-callback */
     it('should fail to upload a file with invalid characters', function(done) {
       var writer = client.upload({container: 'c1', remote: 'a/f1.txt'});
       fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(writer);
@@ -124,20 +131,26 @@ describe('FileSystem based storage provider', function() {
         cb = clearCb;
       });
     });
+    /* eslint-enable mocha/handle-done-callback */
 
     it('should download a file', function(done) {
       var reader = client.download({
         container: 'c1',
         remote: 'f1.txt',
       });
-      reader.pipe(fs.createWriteStream(path.join(__dirname, 'files/f1_downloaded.txt')));
+      reader.pipe(
+        fs.createWriteStream(path.join(__dirname, 'files/f1_downloaded.txt'))
+      );
       reader.on('end', done);
       reader.on('error', done);
     });
 
+    /* eslint-disable mocha/handle-done-callback */
     it('should fail to download a file with invalid characters', function(done) {
       var reader = client.download({container: 'c1', remote: 'a/f1.txt'});
-      reader.pipe(fs.createWriteStream(path.join(__dirname, 'files/a-f1_downloaded.txt')));
+      reader.pipe(
+        fs.createWriteStream(path.join(__dirname, 'files/a-f1_downloaded.txt'))
+      );
       var cb = done;
       var clearCb = function() {};
       reader.on('error', function() {
@@ -149,6 +162,7 @@ describe('FileSystem based storage provider', function() {
         cb = clearCb;
       });
     });
+    /* eslint-enable mocha/handle-done-callback */
 
     it('should get files for a container', function(done) {
       client.getFiles('c1', function(err, files) {

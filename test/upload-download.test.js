@@ -199,14 +199,27 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        assert.deepEqual(res.body, {'result': {'files': {'image': [
-          {'container': 'album1', 'name': 'test.jpg', 'type': 'image/jpeg', 'field': 'image', 'size': 60475},
-        ]}, 'fields': {}}});
+        assert.deepEqual(res.body, {
+          result: {
+            files: {
+              image: [
+                {
+                  container: 'album1',
+                  name: 'test.jpg',
+                  type: 'image/jpeg',
+                  field: 'image',
+                  size: 60475,
+                },
+              ],
+            },
+            fields: {},
+          },
+        });
         done();
       });
   });
 
-  it('fails to upload using dotdot file path', function(done) {
+  it('fails to upload using dotdot file path (1)', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/containers/%2e%2e/upload')
       .expect(200, function(err, res) {
@@ -215,7 +228,7 @@ describe('storage service', function() {
       });
   });
 
-  it('fails to upload using  dotdot file path', function(done) {
+  it('fails to upload using dotdot file path (2)', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('%2e%2e/containers/upload')
       .expect(200, function(err, res) {
@@ -224,7 +237,7 @@ describe('storage service', function() {
       });
   });
 
-  it('fails to upload using dotdot file path', function(done) {
+  it('fails to upload using dotdot file path (3)', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('%2e%2e')
       .expect(200, function(err, res) {
@@ -233,7 +246,7 @@ describe('storage service', function() {
       });
   });
 
-  it('fails to upload using dotdot file path', function(done) {
+  it('fails to upload using dotdot file path (4)', function(done) {
     request('http://localhost:' + app.get('port'))
       .post('/containers/upload/%2e%2e')
       .expect(200, function(err, res) {
@@ -249,9 +262,24 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        assert.deepEqual(res.body, {'result': {'files': {'image': [
-          {'container': 'album1', 'name': 'image-test.jpg', 'originalFilename': 'test.jpg', 'type': 'image/jpeg', 'field': 'image', 'acl': 'public-read', 'size': 60475},
-        ]}, 'fields': {}}});
+        assert.deepEqual(res.body, {
+          result: {
+            files: {
+              image: [
+                {
+                  container: 'album1',
+                  name: 'image-test.jpg',
+                  originalFilename: 'test.jpg',
+                  type: 'image/jpeg',
+                  field: 'image',
+                  acl: 'public-read',
+                  size: 60475,
+                },
+              ],
+            },
+            fields: {},
+          },
+        });
         done();
       });
   });
@@ -291,10 +319,14 @@ describe('storage service', function() {
         .set('Connection', 'keep-alive')
         .expect('Content-Type', /json/)
         .expect(400, function(err, res) {
-          var indexOfMsg =
-            res.body.error.message.toLowerCase().indexOf('no file');
-          assert.notEqual(indexOfMsg, -1,
-            'Error message does not contain \"no file\"');
+          var indexOfMsg = res.body.error.message
+            .toLowerCase()
+            .indexOf('no file');
+          assert.notEqual(
+            indexOfMsg,
+            -1,
+            'Error message does not contain "no file"'
+          );
           done(err);
         });
     } else {
@@ -304,8 +336,10 @@ describe('storage service', function() {
         .set('Connection', 'keep-alive')
         .expect('Content-Type', /json/)
         .expect(500, function(err, res) {
-          assert.equal(res.body.error.message,
-              'bad content-type header, no content-type');
+          assert.equal(
+            res.body.error.message,
+            'bad content-type header, no content-type'
+          );
           done(err);
         });
     }
@@ -421,22 +455,37 @@ describe('storage service', function() {
       });
   });
 
-  it('should upload a file with custom route accessing directly to the ' +
-    'storage connector with renamer', function(done) {
-    request('http://localhost:' + app.get('port'))
-      .post('/custom/upload')
-      .attach('customimagefield', path.join(__dirname, './fixtures/test.jpg'))
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, function(err, res) {
-        assert.deepEqual(res.body, {'result': {'files': {'customimagefield': [
-          {'container': 'album1', 'name': 'customimagefield_test.jpg',
-            'originalFilename': 'test.jpg', 'type': 'image/jpeg',
-            'field': 'customimagefield', 'size': 60475},
-        ]}, 'fields': {}}});
-        done();
-      });
-  });
+  it(
+    'should upload a file with custom route accessing directly to the ' +
+      'storage connector with renamer',
+    function(done) {
+      request('http://localhost:' + app.get('port'))
+        .post('/custom/upload')
+        .attach('customimagefield', path.join(__dirname, './fixtures/test.jpg'))
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, function(err, res) {
+          assert.deepEqual(res.body, {
+            result: {
+              files: {
+                customimagefield: [
+                  {
+                    container: 'album1',
+                    name: 'customimagefield_test.jpg',
+                    originalFilename: 'test.jpg',
+                    type: 'image/jpeg',
+                    field: 'customimagefield',
+                    size: 60475,
+                  },
+                ],
+              },
+              fields: {},
+            },
+          });
+          done();
+        });
+    }
+  );
 
   it('should upload a file with container param', function(done) {
     request('http://localhost:' + app.get('port'))
@@ -445,11 +494,23 @@ describe('storage service', function() {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, function(err, res) {
-        assert.deepEqual(res.body, {'result': {'files': {'customimagefield1': [
-          {'container': 'album1', 'name': 'customimagefield1_test.jpg',
-            'originalFilename': 'test.jpg', 'type': 'image/jpeg',
-            'field': 'customimagefield1', 'size': 60475},
-        ]}, 'fields': {}}});
+        assert.deepEqual(res.body, {
+          result: {
+            files: {
+              customimagefield1: [
+                {
+                  container: 'album1',
+                  name: 'customimagefield1_test.jpg',
+                  originalFilename: 'test.jpg',
+                  type: 'image/jpeg',
+                  field: 'customimagefield1',
+                  size: 60475,
+                },
+              ],
+            },
+            fields: {},
+          },
+        });
         done();
       });
   });
