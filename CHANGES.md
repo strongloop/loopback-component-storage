@@ -1,3 +1,21 @@
+2018-06-20, Version 3.4.0
+=========================
+
+ * added missing tests (Cory Gottschalk)
+
+ * Updated "getFile" to send a 404 for ENOENT errors (Cory Gottschalk)
+
+ * chore: update node support and versions (Taranveer Virk)
+
+ * Add some debug strings to handler and service (Remi Beges)
+
+ * chore: update license (Diana Lau)
+
+ * add AWS S3 options for server side encryption (Timo Wolf)
+
+ * Update README.md (Rand McKinney)
+
+
 2017-08-30, Version 3.3.1
 =========================
 
