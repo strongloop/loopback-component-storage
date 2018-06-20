@@ -133,6 +133,16 @@ describe('Storage service', function() {
       });
     });
 
+    it('should not get a file from a container', function(done) {
+      storageService.getFile('c1', 'f1.txt', function(err, f) {
+        assert(err);
+        assert.equal('ENOENT', err.code);
+        assert.equal(404, err.status);
+        assert(!f);
+        done();
+      });
+    });
+
     it('should destroy a container c1', function(done) {
       storageService.destroyContainer('c1', function(err, container) {
         // console.error(err);
@@ -142,4 +152,3 @@ describe('Storage service', function() {
     });
   });
 });
-
