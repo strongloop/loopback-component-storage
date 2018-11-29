@@ -9,7 +9,9 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha --timeout 3000",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -17,7 +19,8 @@
     "formidable": "^1.2.1",
     "pkgcloud": "^1.5.0",
     "strong-globalize": "^4.1.1",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "snyk": "^1.111.1"
   },
   "devDependencies": {
     "eslint": "^5.4.0",
@@ -33,5 +36,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-component-storage.git"
   },
-  "license": "Artistic-2.0"
+  "license": "Artistic-2.0",
+  "snyk": true
 }
