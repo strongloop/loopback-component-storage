@@ -19,9 +19,18 @@ describe('Storage service', function() {
     it('should return an empty list of containers', function(done) {
       storageService.getContainers(function(err, containers) {
         assert(!err);
-        assert.equal(0, containers.length);
+        assert.equal(containers.length, 0);
         done(err, containers);
       });
+    });
+
+    it('should return an empty list of containers - promise', function(done) {
+      storageService.getContainers()
+        .then(function(containers) {
+          assert.equal(containers.length, 0);
+          done();
+        })
+        .catch(done);
     });
 
     it('should create a new container', function(done) {
@@ -32,12 +41,30 @@ describe('Storage service', function() {
       });
     });
 
+    it('should create a new container - promise', function(done) {
+      storageService.createContainer({name: 'c3'})
+        .then(function(container) {
+          assert(container.getMetadata());
+          done();
+        })
+        .catch(done);
+    });
+
     it('should get a container c1', function(done) {
       storageService.getContainer('c1', function(err, container) {
         assert(!err);
         assert(container.getMetadata());
         done(err, container);
       });
+    });
+
+    it('should get a container c1 - promise', function(done) {
+      storageService.getContainer('c1')
+        .then(function(container) {
+          assert(container.getMetadata());
+          done();
+        })
+        .catch(done);
     });
 
     it('should not get a container c2', function(done) {
@@ -47,10 +74,18 @@ describe('Storage service', function() {
       });
     });
 
+    it('should destroy a container c3 - promise', function(done) {
+      storageService.destroyContainer('c3')
+        .then(function(container) {
+          done(null, container);
+        })
+        .catch(done);
+    });
+
     it('should return one container', function(done) {
       storageService.getContainers(function(err, containers) {
         assert(!err);
-        assert.equal(1, containers.length);
+        assert.equal(containers.length, 1);
         done(err, containers);
       });
     });
@@ -104,9 +139,18 @@ describe('Storage service', function() {
     it('should get files for a container', function(done) {
       storageService.getFiles('c1', function(err, files) {
         assert(!err);
-        assert.equal(1, files.length);
+        assert.equal(files.length, 1);
         done(err, files);
       });
+    });
+
+    it('should get files for a container - promise', function(done) {
+      storageService.getFiles('c1')
+        .then(function(files) {
+          assert.equal(files.length, 1);
+          done();
+        })
+        .catch(done);
     });
 
     it('should get a file', function(done) {
@@ -118,6 +162,16 @@ describe('Storage service', function() {
       });
     });
 
+    it('should get a file - promise', function(done) {
+      storageService.getFile('c1', 'f1.txt')
+        .then(function(f) {
+          assert.ok(f);
+          assert(f.getMetadata());
+          done();
+        })
+        .catch(done);
+    });
+
     it('should remove a file', function(done) {
       storageService.removeFile('c1', 'f1.txt', function(err) {
         assert(!err);
@@ -125,10 +179,21 @@ describe('Storage service', function() {
       });
     });
 
+    it('should remove a file - promise', function(done) {
+      createFile('c1', 'f1.txt')
+        .then(function() {
+          return storageService.removeFile('c1', 'f1.txt')
+            .then(function() {
+              done();
+            });
+        })
+        .catch(done);
+    });
+
     it('should get no files from a container', function(done) {
       storageService.getFiles('c1', function(err, files) {
         assert(!err);
-        assert.equal(0, files.length);
+        assert.equal(files.length, 0);
         done(err, files);
       });
     });
@@ -136,19 +201,39 @@ describe('Storage service', function() {
     it('should not get a file from a container', function(done) {
       storageService.getFile('c1', 'f1.txt', function(err, f) {
         assert(err);
-        assert.equal('ENOENT', err.code);
-        assert.equal(404, err.status);
+        assert.equal(err.code, 'ENOENT');
+        assert.equal(err.status, 404);
         assert(!f);
         done();
       });
     });
 
+    it('should not get a file from a container - promise', function(done) {
+      storageService.getFile('c1', 'f1.txt')
+        .then(function() {
+          throw new Error('should not be throw');
+        })
+        .catch(function(err) {
+          assert.equal(err.code, 'ENOENT');
+          assert.equal(err.status, 404);
+          done();
+        });
+    });
+
     it('should destroy a container c1', function(done) {
       storageService.destroyContainer('c1', function(err, container) {
-        // console.error(err);
         assert(!err);
         done(err, container);
       });
     });
+
+    function createFile(container, file) {
+      return new Promise(function(resolve, reject) {
+        var writer = storageService.uploadStream(container, file);
+        fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(writer);
+        writer.on('finish', resolve);
+        writer.on('error', reject);
+      });
+    }
   });
 });

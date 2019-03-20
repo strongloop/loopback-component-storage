@@ -45,9 +45,18 @@ describe('FileSystem based storage provider', function() {
     it('should return an empty list of containers', function(done) {
       client.getContainers(function(err, containers) {
         assert(!err);
-        assert.equal(0, containers.length);
+        assert.equal(containers.length, 0);
         done(err, containers);
       });
+    });
+
+    it('should return an empty list of containers - promise', function(done) {
+      client.getContainers()
+        .then(function(containers) {
+          assert.equal(containers.length, 0);
+          done();
+        })
+        .catch(done);
     });
 
     it('should create a new container', function(done) {
@@ -58,12 +67,30 @@ describe('FileSystem based storage provider', function() {
       });
     });
 
+    it('should create a new container - promise', function(done) {
+      client.createContainer({name: 'c3'})
+        .then(function(container) {
+          verifyMetadata(container, 'c3');
+          done();
+        })
+        .catch(done);
+    });
+
     it('should get a container c1', function(done) {
       client.getContainer('c1', function(err, container) {
         assert(!err);
         verifyMetadata(container, 'c1');
         done(err, container);
       });
+    });
+
+    it('should get a container c1 - promise', function(done) {
+      client.getContainer('c1')
+        .then(function(container) {
+          verifyMetadata(container, 'c1');
+          done();
+        })
+        .catch(done);
     });
 
     it('should not get a container c2', function(done) {
@@ -73,10 +100,18 @@ describe('FileSystem based storage provider', function() {
       });
     });
 
+    it('should destroy a container c3 - promise', function(done) {
+      client.destroyContainer('c3')
+        .then(function(container) {
+          done(null, container);
+        })
+        .catch(done);
+    });
+
     it('should return one container', function(done) {
       client.getContainers(function(err, containers) {
         assert(!err);
-        assert.equal(1, containers.length);
+        assert.equal(containers.length, 1);
         done(err, containers);
       });
     });
@@ -167,9 +202,18 @@ describe('FileSystem based storage provider', function() {
     it('should get files for a container', function(done) {
       client.getFiles('c1', function(err, files) {
         assert(!err);
-        assert.equal(1, files.length);
+        assert.equal(files.length, 1);
         done(err, files);
       });
+    });
+
+    it('should get files for a container - promise', function(done) {
+      client.getFiles('c1')
+        .then(function(files) {
+          assert.equal(files.length, 1);
+          done();
+        })
+        .catch(done);
     });
 
     it('should get a file', function(done) {
@@ -181,6 +225,16 @@ describe('FileSystem based storage provider', function() {
       });
     });
 
+    it('should get a file - promise', function(done) {
+      client.getFile('c1', 'f1.txt')
+        .then(function(f) {
+          assert.ok(f);
+          verifyMetadata(f, 'f1.txt');
+          done();
+        })
+        .catch(done);
+    });
+
     it('should remove a file', function(done) {
       client.removeFile('c1', 'f1.txt', function(err) {
         assert(!err);
@@ -188,29 +242,67 @@ describe('FileSystem based storage provider', function() {
       });
     });
 
+    it('should remove a file - promise', function(done) {
+      createFile('c1', 'f1.txt').then(function() {
+        return client.removeFile('c1', 'f1.txt')
+          .then(function() {
+            done();
+          });
+      })
+        .catch(done);
+    });
+
     it('should get no files from a container', function(done) {
       client.getFiles('c1', function(err, files) {
         assert(!err);
-        assert.equal(0, files.length);
+        assert.equal(files.length, 0);
         done(err, files);
       });
+    });
+
+    it('should get no files from a container - promise', function(done) {
+      client.getFiles('c1')
+        .then(function(files) {
+          assert.equal(files.length, 0);
+          done();
+        })
+        .catch(done);
     });
 
     it('should not get a file from a container', function(done) {
       client.getFile('c1', 'f2.txt', function(err, f) {
         assert(err);
-        assert.equal('ENOENT', err.code);
+        assert.equal(err.code, 'ENOENT');
         assert(!f);
         done();
       });
     });
 
+    it('should not get a file from a container - promise', function(done) {
+      client.getFile('c1', 'f2.txt')
+        .then(function() {
+          throw new Error('should not be throw');
+        })
+        .catch(function(err) {
+          assert.equal(err.code, 'ENOENT');
+          done();
+        });
+    });
+
     it('should destroy a container c1', function(done) {
       client.destroyContainer('c1', function(err, container) {
-        // console.error(err);
         assert(!err);
         done(err, container);
       });
     });
+
+    function createFile(container, file) {
+      return new Promise(function(resolve, reject) {
+        var writer = client.upload({container: container, remote: file});
+        fs.createReadStream(path.join(__dirname, 'files/f1.txt')).pipe(writer);
+        writer.on('finish', resolve);
+        writer.on('error', reject);
+      });
+    }
   });
 });
