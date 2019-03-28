@@ -1,4 +1,16 @@
-2018-07-10, Version 3.5.0
+2019-03-28, Version 3.6.0
+=========================
+
+ * Pass through AWS/S3 specific options (Alex Owen)
+
+ * add support to promise (Matteo Padovano)
+
+ * style: fix linting (virkt25)
+
+ * {download,upload}Stream: removed callback from doc (Youcef Mammar)
+
+
+2018-07-09, Version 3.5.0
 =========================
 
  * [WebFM] cs/pl/ru translation (candytangnb)
