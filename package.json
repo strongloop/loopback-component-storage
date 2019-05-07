@@ -33,5 +33,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-component-storage.git"
   },
-  "license": "Artistic-2.0"
+  "license": "Artistic-2.0",
+  "author": "IBM Corp."
 }
