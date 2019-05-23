@@ -1,3 +1,11 @@
+2019-05-23, Version 3.6.1
+=========================
+
+ * update pkgcloud and use version 2.x (Anis)
+
+ * chore: update copyrights years (Agnes Lin)
+
+
 2019-03-28, Version 3.6.0
 =========================
 
