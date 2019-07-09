@@ -15,7 +15,7 @@
     "async": "^2.6.1",
     "debug": "^3.1.0",
     "formidable": "^1.2.1",
-    "pkgcloud": "^2.0.0",
+    "pkgcloud": "^2.1.1",
     "strong-globalize": "^4.1.1",
     "uuid": "^3.2.1"
   },
