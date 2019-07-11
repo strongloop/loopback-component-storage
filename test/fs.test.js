@@ -31,6 +31,21 @@ describe('FileSystem based storage provider', function() {
       process.nextTick(done);
     });
 
+    it('should work even it is ran from other path', function(done) {
+      process.chdir('../../../');
+
+      try {
+        console.log(`running from ${process.cwd()}`);
+        client = new FileSystemProvider({
+          root: path.join(__dirname, 'storage'),
+        });
+
+        process.nextTick(done);
+      } catch (error) {
+        process.nextTick(done(error));
+      }
+    });
+
     it('should complain if the root directory doesn\'t exist', function(done) {
       try {
         client = new FileSystemProvider({
