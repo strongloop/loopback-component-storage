@@ -1,3 +1,11 @@
+2019-07-12, Version 3.6.2
+=========================
+
+ * chore: update CODEOWNERS (Diana Lau)
+
+ * Upgrade pkgcloud version (Diego A. Zapata Häntsch)
+
+
 2019-05-23, Version 3.6.1
 =========================
 
