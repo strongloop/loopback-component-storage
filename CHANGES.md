@@ -1,3 +1,9 @@
+2019-07-25, Version 3.6.3
+=========================
+
+ * Rannig from other paths. Property files to array. (Diego A. Zapata Häntsch)
+
+
 2019-07-12, Version 3.6.2
 =========================
 
